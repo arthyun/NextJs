@@ -35,3 +35,17 @@
   / prefetch()는 거의 사용하지 않는다. -> Link가 있기 때문
 
 * 유저의 모든 동작이 관련된 컴포넌트는 클라이언트 컴포넌트이며, 서버 컴포넌트에서 사용하고자 한다면, 별도의 클라이언트 컴포넌트 파일을 서버 컴포넌트 내에서 import해서 붙이면 된다.
+
+8. 서버 코드 작성해보기 (글 작성기능 만들기)
+  / url과 method로 구분됨
+  / GET/POST/PUT/DELETE/PATCH
+  / app폴더 밖에 pages/api 폴더에 서버 코드 작성하기
+  / pages/api 폴더에 만든 파일과 폴더는 자동으로 서버기능의 URL이 된다.
+  / url에 /api/test를 추가하여 이동하면 서버가 응답한다.
+  / 요청을 위한 가장 쉬운 방법은 form 태그를 사용할 것
+  / 글작성을 위해 write 컴포넌트에서 등록 버튼을 클릭 후 req.body 값을 db에 insert 해준다. -> db.collection('post').insertOne(req.body);
+  / 함부로 저장이 되지않게 예외처리가 필요
+
+* 서버에서 return할때 res.status(200).redirect(302,'경로')를 사용해서 완료 후 페이지가 이동되게 하자.
+* 서버 코드에서 응답(res)에 대한 return을 하지 않으면 오류가 발생한다.
+

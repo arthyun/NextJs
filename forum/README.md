@@ -21,5 +21,17 @@
      let result = await db.collection('post').find().toArray();
    ; DB 입출력 코드는 서버 컴포넌트안에서만 작성하기!
 
-5. 
+5. url을 이용하여 상세페이지로 이동하게 하기
+  / 다이나믹 라우트 기능을 이용하여 폴더링하기 폴더명 = [id] 
+  / DB 연결문을 작성 후 findOne({'객체 내용'}) 을 사용하여 해당 객체데이터를 선택하여 가져오기
 
+6. 다이나믹 라우트가 사용된 페이지로 이동 시 입력한 url값은 해당 컴포넌트에서 props로 받아올 수 있다!!
+  / list 컴포넌트에서 해당 글 클릭 시 _id값을 url로 넘겨 다이나믹 라우트가 가능하게 해보자! -> Link 태그를 이용!
+
+7. useRouter 기능을 이용해서 페이지를 이동해보자
+  / Hook을 사용하려면 client 컴포넌트에서만 가능하다.
+  / useRouter을 'next/navigation'으로 import 한다.
+  / 변수에 useRouter()을 담아주고, push('경로'), forward(), back(), refresh(), prefetch('경로')를 사용해 보자.
+  / prefetch()는 거의 사용하지 않는다. -> Link가 있기 때문
+
+* 유저의 모든 동작이 관련된 컴포넌트는 클라이언트 컴포넌트이며, 서버 컴포넌트에서 사용하고자 한다면, 별도의 클라이언트 컴포넌트 파일을 서버 컴포넌트 내에서 import해서 붙이면 된다.

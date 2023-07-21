@@ -49,3 +49,19 @@
 * 서버에서 return할때 res.status(200).redirect(302,'경로')를 사용해서 완료 후 페이지가 이동되게 하자.
 * 서버 코드에서 응답(res)에 대한 return을 하지 않으면 오류가 발생한다.
 
+9. 글 수정기능 만들기
+  / list에서 해당 게시물의 수정버튼을 클릭하여 edit 페이지로 이동
+  / 이동 시 url에 DB의 id값을 같이 넘겨줘서 props로 받은 후 findOne({_id: props...})로 찾아서 기존 게시글을 태그에 박아줘야함.
+  / await db.collection('post').updateOne({'수정할 대상'}, {$set: {'수정할 객체 내용'}})을 입력해서 수정문을 서버에 보내줘야 한다.
+  / 위의 내용이 수반되려면 update의 성능을 가진 서버를 필요로 한다.
+  / next.js는 input태그에 value를 사용하지 않고 defaultValue를 사용한다.
+  / 수정 서버에서는 updateOne({}, {$set: {}})을 사용하는데 필요한 id값을 글 수정 페이지에서 넘겨줘야한다. 이때 input 태그로 id값을 담아서 보내주는데 화면에 보이지 않게 하기 위해 display: none 처리한다. -> input에 disable속성을 사용하게 되면 값을 제대로 넘기지 못한다.
+
+10. 글 삭제기능 만들기
+  / List 페이지가 서버 컴포넌트이며, 내부에 포함된 result.map은 클라이언트 컴포넌트로 사용하기 위해 파일을 별도로 생성하자.
+  / 상위 List페이지에서 ListItem 컴포넌트로 DB데이터를 props로 넘겨주자. -> SEO를 최적화 하려면 데이터를 props로 넘겨주는게 좋음
+  / form태그 대신 서버에 요청하려면 ajax(fetch)를 사용해야함.
+  / deleteOne({})를 사용하여 전달 받은 id에 맞는 DB 필드를 삭제시켜 주자.
+
+* fetch 요청 시 url값에 쿼리 스트링(ex. /api/test?name=son&age=31)을 보내면, 서버 파일에서 req.query로 받아올 수 있다. -> GET요청과 동일
+* api도 다이나믹 라우트가 가능함 -> /pages/api/ 경로에 [어쩌구].js 파일을 생성하면됨

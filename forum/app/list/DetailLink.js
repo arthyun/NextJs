@@ -14,7 +14,7 @@ export default function DetailLink(){
 
     return (
         <>
-            <button onClick={() => router.push('/')}>버튼</button>
+            <button onClick={() => router.push('/')}>이동버튼</button>
             {/* <button onClick={() => router.forward()}>버튼</button>
             <button onClick={() => router.back()}>버튼</button>
             <button onClick={() => router.refresh()}>새로고침</button>

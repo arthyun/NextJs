@@ -11,6 +11,8 @@ body {
   padding: 20px;
   margin-bottom: 5px;
   box-shadow: rgb(224, 224, 224) 0px 2px 4px 0px;
+  opacity: 1;
+  transition: all 1s;
 }
 .list-item h4 {
   font-size: 20px;
@@ -35,4 +37,22 @@ button {
   background: lightgray;
   border: none;
   border-radius: 5px;
+}
+.navbar {
+  background: white;
+  padding: 20px;
+}
+.navbar a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+.logo {
+  font-weight: bold;
 } 
+.delBtn {
+  display: inline-block;
+  margin-left: 10px;
+  color: red;
+  cursor: pointer;
+}

@@ -73,10 +73,22 @@
   / 다이나믹 렌더링의 단점은 서버나 DB의 부하가 올 수 있음 -> 해결책은 캐시(Cache) 기능을 사용하면 될듯하다. -> fetch('URL', { cache: 'force-cache' or 'no-store'(실시간 갱신) }) or fetch('URL', { next: { revalidate: 60 } })
   / 페이지 상단에 export const revalidate = 60; 입력 해 두면, 페이지 첫 방문에 60초 동안 페이지를 캐싱한다.
 
-12. 회원 기능에 대해서... (Session, JWT, OAuth)
+12. 회원 기능에 대해서 설명... (Session, JWT, OAuth)
   / 서버로부터 데이터를 받아와 쿠키 저장소에 저장해두고 페이지마다 확인한다.
   / 세션은 서버와 DB에 직접적으로 데이터 확인을 하기 때문에 부담이 있다.
   / JWT는 서버가 확인은 하지만 DB에는 직접적으로 요청을 하지 않기때문에 부담이 덜 하다.
   / OAuth는 A 사이트의 회원정보를 가져다 B 사이트에서 사용할 수 있다. -> ex. 구글, 네이버 로그인
   / 하지만 Nextjs에서는 NextAuth.js를 지원하기 때문에 별도 구현없이 NextAuth를 사용하면 편하다. -> 하지만 아이디/패스워드를 입력하여 로그인 해야하는 경우에는 강제로 JWT 방식을 사용하여야 한다.(Session 금지) -> Next.js에서 막아둠
-  / 
+
+13. 소셜로그인 구현 해보자 (NextAuth 라이브러리 사용)
+  1. 깃헙 설정 페이지가서 Developer Settiong > OAuth Apps 생성 후 Key값 받기
+  2. npm install next-auth@4.21.1 설치하기
+  3. /pages/api/ 경로에 auth 폴더 생성 후 [...nextauth].js 파일 생성하기 -> 해당 js 파일에는 강의 하단에 코드를 붙여 넣을것
+  4. secret은 JWT 사용 시 기입할 암호를 지정할 것
+  5. 최상단의 layout.js로 가서 로그인 버튼을 추가 -> 로그인 버튼은 클라이언트 컴포넌트에서 사용할 수 있기 때문에 별도로 컴포넌트를 생성하여 layout.js에 추가해야한다.
+  6. 로그인 버튼에 next-auth/react에서 지원하는 signIn()을 사용한다.
+  7. 로그인된 유저정보를 확인하려면 최상단 layout.js에서 await getServerSession(authOptions/[...nextauth].js 파일 참고)을 사용해야하며, 비동기 처리이기 때문에 await를 붙여준다.
+  8. 삼항연산자를 이용하여 session값이 존재할때는 로그아웃 버튼이 보이게, 반대일땐 로그인 버튼이 보이게 셋팅해주자.
+
+  * Client Component일때 -> layout.js에서 <SessionProvider></SessionProvider>로 children을 감싸준 후 -> 자식 컴포넌트에서 useSession()을 이용해서 상태를 확인할 수 있다.
+  * Server Component일때 -> getServerSession('설정값')으로 세션을 가져와 상태를 확인할 수 있다.

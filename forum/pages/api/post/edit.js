@@ -21,7 +21,7 @@ export default async function handler(req, res){
         const result = await db.collection('post').updateOne(
             { _id: new ObjectId(req.body._id) }, { $set: newReqBody }
             );
-        console.log(result);
+        // console.log(result);
         return res.status(200).redirect(302, '/list');
     }
 }

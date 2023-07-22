@@ -3,7 +3,7 @@ import { connectDB } from "@/util/database";
 export default async function handler (req, res) {
 
     if(req.method == 'POST'){
-        console.log(req.body);
+        // console.log(req.body);
 
         //예외처리
         if(req.body.title === '' || req.body.content === ''){

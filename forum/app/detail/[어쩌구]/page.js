@@ -8,7 +8,7 @@ export default async function Detail(props){
     let result = await db.collection('post').findOne({ _id: new ObjectId(props.params.어쩌구)});
     
     //url로 입력한 값은 props로 확인 가능하다.
-    console.log(props);
+    // console.log(props);
     
     return (
         <div>

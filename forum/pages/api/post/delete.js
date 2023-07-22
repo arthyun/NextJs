@@ -10,7 +10,7 @@ export default async function handler(req, res){
         const client = await connectDB;
         const db = await client.db('forum');
         const result = await db.collection('post').deleteOne({ _id: new ObjectId(req.body) });
-        console.log(result);
+        // console.log(result);
 
         // return res.status(200).redirect(302, '/list');
         return res.status(200).json('삭제완료');

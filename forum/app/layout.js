@@ -2,7 +2,7 @@ import Link from 'next/link';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import LoginBtn from './LoginBtn';
-import LogOutBtn from './LogoutBtn';
+import LogOutBtn from './LogOutBtn';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 

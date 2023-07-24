@@ -1,3 +1,5 @@
+import { connectDB } from '@/util/database';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -16,6 +18,7 @@ export const authOptions = {
     })
   ],
   //JWT 사용시 입력 암호
-  secret: '3316'
+  secret: '3316',
+  adapter: MongoDBAdapter(connectDB)
 };
 export default NextAuth(authOptions);

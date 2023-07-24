@@ -92,3 +92,12 @@
 
   * Client Component일때 -> layout.js에서 <SessionProvider></SessionProvider>로 children을 감싸준 후 -> 자식 컴포넌트에서 useSession()을 이용해서 상태를 확인할 수 있다.
   * Server Component일때 -> getServerSession('설정값')으로 세션을 가져와 상태를 확인할 수 있다.
+
+14. DB Adapter를 이용하여 JWT 방식을 Session 방식으로 변경해보자.
+  / NextAuth는 별도의 셋팅이 없으면 default가 JWT방식이다. -> 이게 싫으면 세션 방식으로 전환해서 사용할 수 있음 -> DB adapter를 이용하여 가능하다.
+  1. npm install @next-auth/mongodb-adapter 설치 후 npm run dev로 띄우기
+  2. [...nextauth].js 로 가서 "adapter: MongoDBAdapter(connectDB)" import하여 입력하기 -> 만약 Redis를 사용한다면... RedisAdapter를 찾으면 됌
+  3. mongoDB 웹 브라우저 확인해보면 accounts, sessions, users 콜렉션을 확인할 수 있다.
+  4. 글을 삭제하려면 무엇이 필요할까? -> 요청자 === 글쓴이인지 파악이 되야함 -> 새글 저장 시 작성자의 정보도 함께 DB에 기록해둘 것! -> if(session){ req.body.author = session.user.email; }
+  5. 작성해 놓은 서버 코드에 getServerSession(req, res, authOptions); 메소드를 이용하여 유저의 정보를 session.user...으로 접근할 수 있다. -> 기존 getServerSession과 다른 점은 파라미터로 req, res가 포함된다.
+  6. 로그인한 유저가 본인이 작성한 글만 삭제할 수 있게 하려면? -> delete api로 가서 session 정보와 DB의 author 정보를 확인한 후 deleteOne()가 작동하게 코드를 짜면 된다!

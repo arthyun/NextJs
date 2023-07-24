@@ -1,6 +1,14 @@
 import { connectDB } from "@/util/database";
+import { authOptions } from "../auth/[...nextauth]";
+import { getServerSession } from 'next-auth';
 
 export default async function handler (req, res) {
+    let session = await getServerSession(req, res, authOptions);
+    if(session){
+        //로그인 정보가 있다면 객체에 author 추가
+        req.body.author = session.user.email;
+    }
+    console.log(req.body);
 
     if(req.method == 'POST'){
         // console.log(req.body);

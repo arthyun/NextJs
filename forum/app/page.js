@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <div style={{ padding: '2.5rem 1.5rem', boxSizing: 'border-box' }}>
-      <Image src={logo} width={320} height={65} style={{ marginRight: '20px' }} />
+      <Image src={logo} width={320} height={65} style={{ marginRight: '20px' }} alt="logo" />
       <span style={{ fontSize: '30px' }}>13버전 분석...</span>
     </div>
   );

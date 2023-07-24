@@ -21,8 +21,8 @@ body {
 }
 .list-item p {
   color: grey;
-  margin : 5px 0px;
-} 
+  margin: 5px 0px;
+}
 .p-20 {
   padding: 20px;
 }
@@ -41,6 +41,7 @@ button {
 .navbar {
   background: white;
   padding: 20px;
+  border-bottom: 1px solid #333;
 }
 .navbar a {
   margin-right: 10px;
@@ -49,7 +50,7 @@ button {
 }
 .logo {
   font-weight: bold;
-} 
+}
 .delBtn {
   display: inline-block;
   margin-left: 10px;

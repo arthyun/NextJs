@@ -1,5 +1,6 @@
-import { connectDB } from "@/util/database";
-
+import { connectDB } from '@/util/database';
+import Image from 'next/image';
+import logo from '/public/next.svg';
 
 export default async function Home() {
   //DB 불러오기
@@ -10,8 +11,10 @@ export default async function Home() {
   let result = await db.collection('post').find().toArray();
   console.log(result);
 
-
   return (
-    <div>안녕</div>
-  )
-};
+    <div style={{ padding: '2.5rem 1.5rem', boxSizing: 'border-box' }}>
+      <Image src={logo} width={320} height={65} style={{ marginRight: '20px' }} />
+      <span style={{ fontSize: '30px' }}>13버전 분석...</span>
+    </div>
+  );
+}

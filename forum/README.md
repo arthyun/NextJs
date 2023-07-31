@@ -101,3 +101,11 @@
   4. 글을 삭제하려면 무엇이 필요할까? -> 요청자 === 글쓴이인지 파악이 되야함 -> 새글 저장 시 작성자의 정보도 함께 DB에 기록해둘 것! -> if(session){ req.body.author = session.user.email; }
   5. 작성해 놓은 서버 코드에 getServerSession(req, res, authOptions); 메소드를 이용하여 유저의 정보를 session.user...으로 접근할 수 있다. -> 기존 getServerSession과 다른 점은 파라미터로 req, res가 포함된다.
   6. 로그인한 유저가 본인이 작성한 글만 삭제할 수 있게 하려면? -> delete api로 가서 session 정보와 DB의 author 정보를 확인한 후 deleteOne()가 작동하게 코드를 짜면 된다!
+
+
+15. 회원가입 페이지를 만들어보자
+ 1. register 폴더 생성 후 page.js 생성 -> 수강 페이지 코드 복붙
+ 2. auth에 signup.js 생성 -> mongoDB 연결 후 -> let result = await db.collection('user_cred').insertOne(req.body) -> user_cred라는 콜렉션을 생성한 후 req.body를 인서트함!
+ 3. DB에 패스워드를 저장하려면 암호화 한 후 저장할 것 -> npm install bcrypt -> let hash = await bcrypt.hash(req.body.password, 10)를 작성하여 암호화 됐는지 확인해보자
+ 4. [...nextauth].js로 돌아가서 강의 하단의 CredentialProvider 코드 복붙
+ 5. Write 페이지를 로그인 한 사람만 보이게 만들어 보자

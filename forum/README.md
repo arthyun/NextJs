@@ -102,10 +102,23 @@
   5. 작성해 놓은 서버 코드에 getServerSession(req, res, authOptions); 메소드를 이용하여 유저의 정보를 session.user...으로 접근할 수 있다. -> 기존 getServerSession과 다른 점은 파라미터로 req, res가 포함된다.
   6. 로그인한 유저가 본인이 작성한 글만 삭제할 수 있게 하려면? -> delete api로 가서 session 정보와 DB의 author 정보를 확인한 후 deleteOne()가 작동하게 코드를 짜면 된다!
 
-
 15. 회원가입 페이지를 만들어보자
  1. register 폴더 생성 후 page.js 생성 -> 수강 페이지 코드 복붙
  2. auth에 signup.js 생성 -> mongoDB 연결 후 -> let result = await db.collection('user_cred').insertOne(req.body) -> user_cred라는 콜렉션을 생성한 후 req.body를 인서트함!
  3. DB에 패스워드를 저장하려면 암호화 한 후 저장할 것 -> npm install bcrypt -> let hash = await bcrypt.hash(req.body.password, 10)를 작성하여 암호화 됐는지 확인해보자
  4. [...nextauth].js로 돌아가서 강의 하단의 CredentialProvider 코드 복붙
  5. Write 페이지를 로그인 한 사람만 보이게 만들어 보자
+
+16. 댓글 기능을 만들어보자
+ 1. 새로고침 없이 보이게 하기 위해 client side rendering 하게끔 작성하자
+ 2. detail > page.js 하단에 Comment.js를 client단으로 생성하여 붙여주자
+ 3. input과 button을 꾸미자. -> state로 value 지정 및 onChange 할당
+ 4. onClick으로 fetch가 되게 작성
+ 5. 댓글전용 collection을 생성하여 DB에 저장하는것이 편함 -> 부모 게시물의 id값을 가지고 있는 테이블이면 좋음(종속성)
+ 6. 숙제 -> DB에 댓글 저장 하는 기능 구현
+ 7. 부모 컴포넌트로부터 _id값을 props로 받아와 fetch() 시 body에 객체로 comment와 id를 넘겨준다.
+ 8. client component인 Comment.js에서 props._id로 DB에 접근하여 _id에 해당하는 댓글을 가져오자
+ 9. client component에서는 직접 DB 접근이 불가능 하기 때문에 ajax로 서버에 요청을 해야함 -> server 하나더 만들어야함
+ 10. bring 서버 생성 후 GET 요청을 하고서 await db.collection('comment').find({ parent: new ObjectId() }).toArray(); -> find 부분에 parent 값을 보내서 DB에서 찾아오기
+ 11. client component에서 useEffect()로 값을 받아서 state에 저장한다.
+ 12. result를 댓글 위치에 뿌려준다.

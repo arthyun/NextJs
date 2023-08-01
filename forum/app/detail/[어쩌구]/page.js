@@ -1,5 +1,6 @@
 import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
+import Comment from "./Comment";
 
 export default async function Detail(props){
     //DB 불러오기
@@ -15,6 +16,9 @@ export default async function Detail(props){
             <h2>상세페이지</h2>
             <h3>{result.title}</h3>
             <p>{result.content}</p>
+
+            {/* 댓글 컴포넌트 자리 */}
+            <Comment _id={result._id.toString()} />
         </div>
     )
 };

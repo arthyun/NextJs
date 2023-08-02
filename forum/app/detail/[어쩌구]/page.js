@@ -1,6 +1,7 @@
 import { connectDB } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Comment from "./Comment";
+import { notFound } from "next/navigation";
 
 export default async function Detail(props){
     //DB 불러오기
@@ -10,6 +11,10 @@ export default async function Detail(props){
     
     //url로 입력한 값은 props로 확인 가능하다.
     // console.log(props);
+
+    if(result === null) {
+        return notFound();
+    };
     
     return (
         <div>

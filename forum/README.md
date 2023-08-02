@@ -122,3 +122,12 @@
  10. bring 서버 생성 후 GET 요청을 하고서 await db.collection('comment').find({ parent: new ObjectId() }).toArray(); -> find 부분에 parent 값을 보내서 DB에서 찾아오기
  11. client component에서 useEffect()로 값을 받아서 state에 저장한다.
  12. result를 댓글 위치에 뿌려준다.
+
+17. SSR의 단점은 페이지 이동 시 새로고침 된다.
+  / Link 태그 사용 시 새로고침을 방지해줌
+  / 즉각적인 반응을 위해 loading / error / not-found 페이지를 셋팅해놔도 됨
+  / loading.js를 생성해서 테스트해보자 -> React 에서는 Suspense 컴포넌트와 동일한 기능을 함
+  / error.js 생성 시 주의할 점은 client component로 생성해야지 작동한다는 것이다. props를 console에 출력해보면 에러 정보를 확인할 수 있다.
+  / 만약 해당 경로에 error.js가 없다면 상위 폴더로 가서 error.js를 찾는다. -> 최상위 폴더에 error.js 하나만 생성해놔도 문제가 없다는 뜻이다.
+  / not-found.js 를 생성한 후 사용하고자 하는 컴포넌트에서 notFound() 함수를 호출하여 불러올것 -> if(result === null) { return notFound(); };
+  

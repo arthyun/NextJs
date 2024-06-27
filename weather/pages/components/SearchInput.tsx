@@ -7,6 +7,7 @@ export default function SearchInput({ type, placeholder, onChange, execFunc }) {
     <div className='searchArea'>
       <input type={type} placeholder={placeholder} value={text} onChange={(e: ChangeEvent<HTMLInputElement>) => setText(e.target.value)} />
       <button type='button' onClick={() => execFunc(text)}>
+        {/* <button type='button'> */}
         검색
       </button>
     </div>

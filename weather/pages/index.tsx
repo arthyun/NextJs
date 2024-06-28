@@ -1,6 +1,9 @@
 import { Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import sigungu from '@/sigungu.json';
+import WeatherHeader from '@/pages/components/WeatherHeader';
+import WeatherDaily from '@/pages/components/WeatherDaily';
+import WeatherWeek from '@/pages/components/WeatherWeek';
 import SearchInput from '@/pages/components/SearchInput';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -74,15 +77,18 @@ export default function Home({ data }) {
   };
 
   return (
-    <main className={`${inter.className}`}>
+    <main className={`${inter.className} w-full xl:flex xl:flex-row xl:flex-wrap md:flex md:flex-col relative pt-10`}>
       <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} execFunc={execFunc} />
-      {/* <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} /> */}
+      <WeatherHeader />
+      <WeatherDaily />
+      <WeatherWeek />
+      {/* 
       {data?.body?.items?.item?.map((item: ResBody, index: number) => {
         return <p key={index}>{item.fcstTime}</p>;
       })}
       <button type='button' onClick={() => router.push(`/?${createParam(resBodyChanged)}`)}>
         동적 패치 테스트
-      </button>
+      </button> */}
     </main>
   );
 }

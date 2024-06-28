@@ -97,16 +97,6 @@ export default function Home({ data }) {
 export async function getServerSideProps({ query }) {
   // console.log(query);
 
-  // ssr로 현재위치 받아오는 방법 찾아봐야함
-  // if ('geolocation' in navigator) {
-  //   // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-  //   navigator.geolocation.getCurrentPosition(({ coords }) => {
-  //     const { latitude, longitude } = coords;
-  //     console.log(latitude, longitude);
-  //     // setLocation({ latitude, longitude });
-  //   });
-  // }
-
   const resBody: ResBody = {
     serviceKey: '9D7Rg6V6wDr4R1GG9TV/Y1c4JU9ttSuq9KL8/+5PMw4tls0giUwdYXMH751nxznUp7lL3wQL0YDgFZYc/dNtwQ==',
     pageNo: '1',

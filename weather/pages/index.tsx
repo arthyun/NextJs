@@ -1,10 +1,11 @@
 import { Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import sigungu from '@/sigungu.json';
+import SearchInput from '@/pages/components/SearchInput';
 import WeatherHeader from '@/pages/components/WeatherHeader';
 import WeatherDaily from '@/pages/components/WeatherDaily';
 import WeatherWeek from '@/pages/components/WeatherWeek';
-import SearchInput from '@/pages/components/SearchInput';
+import BottomSheet from './components/BottomSheet';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -82,6 +83,7 @@ export default function Home({ data }) {
       <WeatherHeader />
       <WeatherDaily />
       <WeatherWeek />
+      <BottomSheet />
       {/* 
       {data?.body?.items?.item?.map((item: ResBody, index: number) => {
         return <p key={index}>{item.fcstTime}</p>;

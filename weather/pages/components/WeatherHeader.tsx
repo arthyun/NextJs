@@ -64,7 +64,7 @@ export default function WeatherHeader() {
     const response = await fetch(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lng}&y=${lat}&input_coord=WGS84`, {
       headers: {
         // 'Content-Type': 'application/json',
-        Authorization: `KakaoAK 9e1e25ce894be38c63974de5693b0e20`
+        Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAOAK_KEY as string}`
       }
     });
     const result = await response.json();
@@ -75,7 +75,7 @@ export default function WeatherHeader() {
   // 실시간 날씨 조회
   const getCurData = async (lat: number, lng: number, date: string, time: string) => {
     const resBody: ResBody = {
-      serviceKey: '9D7Rg6V6wDr4R1GG9TV/Y1c4JU9ttSuq9KL8/+5PMw4tls0giUwdYXMH751nxznUp7lL3wQL0YDgFZYc/dNtwQ==',
+      serviceKey: process.env.NEXT_PUBLIC_VWORLD_KEY as string,
       pageNo: '1',
       numOfRows: '10',
       dataType: 'json',
@@ -93,7 +93,7 @@ export default function WeatherHeader() {
   // 하루치 날씨 조회
   const getDailyData = async (lat: number, lng: number, date: string) => {
     const resBody: ResBody = {
-      serviceKey: '9D7Rg6V6wDr4R1GG9TV/Y1c4JU9ttSuq9KL8/+5PMw4tls0giUwdYXMH751nxznUp7lL3wQL0YDgFZYc/dNtwQ==',
+      serviceKey: process.env.NEXT_PUBLIC_VWORLD_KEY as string,
       pageNo: '1',
       numOfRows: '100',
       dataType: 'json',

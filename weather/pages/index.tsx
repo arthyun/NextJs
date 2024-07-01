@@ -1,11 +1,8 @@
 import { Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import sigungu from '@/sigungu.json';
-import SearchInput from '@/pages/components/SearchInput';
-import WeatherHeader from '@/pages/components/WeatherHeader';
-import WeatherDaily from '@/pages/components/WeatherDaily';
-import WeatherWeek from '@/pages/components/WeatherWeek';
-import BottomSheet from './components/BottomSheet';
+import SearchInput from './components/SearchInput';
+import WeatherWrap, { createParam } from './components/WeatherWrap';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,12 +16,6 @@ type ResSigungu = {
   nx: number;
   ny: number;
   sigungu: string;
-};
-
-const createParam = (urlData: ResBody) => {
-  return Object.keys(urlData)
-    .map((item) => `${encodeURIComponent(item)}=${encodeURIComponent(urlData[item])}`)
-    .join('&');
 };
 
 // Main
@@ -66,12 +57,9 @@ export default function Home({ data }) {
   const router = useRouter();
 
   return (
-    <main className={`${inter.className} w-full xl:flex xl:flex-row xl:flex-wrap md:flex md:flex-col relative pt-10`}>
+    <main className={`${inter.className} w-full xl:flex xl:flex-row xl:flex-wrap md:flex md:flex-col relative pt-10 overflow-hidden`}>
       <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} execFunc={execFunc} />
-      <WeatherHeader />
-      <WeatherDaily />
-      <WeatherWeek />
-      <BottomSheet />
+      <WeatherWrap />
     </main>
   );
 }

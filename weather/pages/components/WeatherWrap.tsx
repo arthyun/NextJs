@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { createGpsTransfer } from '@/util/convertXY';
+import LoadingSplash from '@/util/LoadingSplash';
 import WeatherHeader from './WeatherHeader';
 import WeatherDaily from './WeatherDaily';
 import WeatherWeek from './WeatherWeek';
 import BottomSheet from './BottomSheet';
+import axios from 'axios';
 
 // 타입
 type ResBody = {
@@ -59,6 +61,7 @@ export const createParam = (urlData: ResBody) => {
 
 export default function WeatherWrap() {
   // 상태
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [location, setLocation] = useState<LocationTypes[]>([]);
   const [today, setToday] = useState<FetchTypes[]>([]);
   const [daily, setDaily] = useState<DailyTypes[]>([]);
@@ -66,14 +69,14 @@ export default function WeatherWrap() {
 
   // 현위치 조회
   const curLocation = async (lat: number, lng: number) => {
-    const response = await fetch(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lng}&y=${lat}&input_coord=WGS84`, {
+    const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lng}&y=${lat}&input_coord=WGS84`, {
       headers: {
         // 'Content-Type': 'application/json',
         Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAOAK_KEY as string}`
       }
     });
-    const result = await response.json();
-    setLocation(result.documents);
+    const result = response.data.documents;
+    setLocation(result);
     return result;
   };
 
@@ -89,9 +92,9 @@ export default function WeatherWrap() {
       nx: lat,
       ny: lng
     };
-    const response = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?${createParam(resBody)}`);
-    const result = await response.json();
-    setToday(result.response.body.items.item);
+    const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?${createParam(resBody)}`);
+    const result = response.data.response.body.items.item;
+    setToday(result);
     return result;
   };
 
@@ -107,9 +110,9 @@ export default function WeatherWrap() {
       nx: lat,
       ny: lng
     };
-    const response = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?${createParam(resBody)}`);
-    const result = await response.json();
-    setDaily(result.response.body.items.item);
+    const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?${createParam(resBody)}`);
+    const result = response.data.response.body.items.item;
+    setDaily(result);
     return result;
   };
 
@@ -125,11 +128,45 @@ export default function WeatherWrap() {
       nx: lat,
       ny: lng
     };
-    const response = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?${createParam(resBody)}`);
-    const result = await response.json();
-    setWeek(result.response.body.items.item);
+    const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?${createParam(resBody)}`);
+    const result = response.data.response.body.items.item;
+    setWeek(result);
     return result;
   };
+
+  useEffect(() => {
+    // axios interceptors 부분
+    axios.interceptors.request.use(
+      (config) => {
+        // if(config.url.includes('/api/')) setIsLoading(true);
+        setIsLoading(true);
+        return config;
+      },
+      (error) => {
+        // 에러 팝업 혹은 콘솔 표출
+        return Promise.reject(error);
+      }
+    );
+    axios.interceptors.response.use(
+      (response) => {
+        setIsLoading(false);
+        // const data = JSON.parse(JSON.stringify(response.data).replace(/\"ATV\"/g, '"8VSB"'));
+        // return { ...response, data };
+        // const data = restoreResponseXss(response.data);
+        // console.log(data, response.data);
+        // return { ...response, data };
+        return response;
+      },
+      (error) => {
+        setIsLoading(false);
+        if (error.response?.status === 401 || error.response.data?.status === '401') {
+          // setIsLogin(userInfo ? false : undefined);
+        }
+        // 에러 팝업 혹은 콘솔 표출
+        return Promise.reject(error);
+      }
+    );
+  }, []);
 
   useEffect(() => {
     // 현재위치 받아오는 방법 찾아봐야함 (ssr에서 동작하지 않음)
@@ -153,7 +190,7 @@ export default function WeatherWrap() {
         // console.log(otherGpsTransfer.getxLat());
         // console.log(otherGpsTransfer.getyLon());
 
-        // 데이터 연동 (현재 3가지 fetch)
+        // 데이터 연동 (현재 4가지 fetch)
         Promise.allSettled([
           curLocation(latitude, longitude),
           getCurData(otherGpsTransfer.getxLat(), otherGpsTransfer.getyLon(), resultDate, timezone),
@@ -168,10 +205,13 @@ export default function WeatherWrap() {
 
   return (
     <>
+      {/* <Suspense fallback={<LoadingSplash />}> */}
       <WeatherHeader location={location} today={today} daily={daily} />
       <WeatherDaily daily={daily} />
       <WeatherWeek week={week} />
       <BottomSheet />
+      {/* </Suspense> */}
+      {isLoading && <LoadingSplash />}
     </>
   );
 }

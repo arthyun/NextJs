@@ -7,7 +7,7 @@ export default function BottomSheet() {
     <>
       {open ? <div className='screenOverlay fixed bottom-0 left-0 z-1000 w-full h-screen bg-black opacity-30' onClick={() => setOpen(!open)}></div> : null}
       <section
-        className={`bg-red-300 w-full h-3/6 fixed bottom-0 left-0 z-1100 xl:hidden md:block transition-transform duration-3600 ease-in-out ${
+        className={`bg-[#fff] w-full h-3/6 fixed bottom-0 left-0 z-1100 rounded-tl-xl rounded-tr-xl xl:hidden md:block transition-transform duration-3600 ease-in-out ${
           open ? 'translate-y-0' : 'translate-y-[90%]'
         }`}
       >

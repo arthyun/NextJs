@@ -11,13 +11,12 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
   }, [daily]);
 
   return (
-    <section className='xl:w-8/12 flex flex-col gap-2 justify-center px-[10px] box-border border-2 border-blue-600'>
+    <section className='xl:w-8/12 flex flex-col gap-2 justify-center box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
       <h3>🕙 시간별 일기예보</h3>
-
       <ul className='flex gap-2 overflow-x-scroll'>
         {temp?.map((item, index) => {
           return (
-            <li className='border-2 border-black text-lg' key={index}>
+            <li className='text-white text-lg' key={index}>
               <dl className='flex flex-col gap-2 items-center justify-center min-w-36 min-h-36'>
                 <dt>{item.fcstTime.substring(0, 2)}시</dt>
                 <dd className='text-4xl'>{rn1[index].fcstValue === '강수없음' ? '☀️' : '☔️'}</dd>

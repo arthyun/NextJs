@@ -7,10 +7,10 @@ import WeatherWeek from './WeatherWeek';
 import BottomSheet from './BottomSheet';
 import axios from 'axios';
 import Image from 'next/image';
-import sunnyImage from '@/public/sunny.jpg';
-import rainImage from '@/public/rain.jpg';
-import foggyImage from '@/public/foggy.jpg';
-import foggyandsunnyImage from '@/public/foggyandsunny.jpg';
+import sunnyImage from '@/public/images/sunny.jpg';
+import rainImage from '@/public/images/rain.jpg';
+import foggyImage from '@/public/images/foggy.jpg';
+import foggyandsunnyImage from '@/public/images/foggyandsunny.jpg';
 
 // 타입
 type ResBody = {

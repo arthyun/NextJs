@@ -6,6 +6,11 @@ import WeatherDaily from './WeatherDaily';
 import WeatherWeek from './WeatherWeek';
 import BottomSheet from './BottomSheet';
 import axios from 'axios';
+import Image from 'next/image';
+import sunnyImage from '@/public/sunny.jpg';
+import rainImage from '@/public/rain.jpg';
+import foggyImage from '@/public/foggy.jpg';
+import foggyandsunnyImage from '@/public/foggyandsunny.jpg';
 
 // 타입
 type ResBody = {
@@ -205,12 +210,17 @@ export default function WeatherWrap() {
 
   return (
     <>
+      <div className='w-full h-full absolute top-0 left-0 -z-10 object-cover'>
+        <Image src={today?.filter((item: FetchTypes) => item.category === 'PTY')[0]?.obsrValue !== '0' ? rainImage : sunnyImage} alt='bg' fill />
+      </div>
+
       {/* <Suspense fallback={<LoadingSplash />}> */}
       <WeatherHeader location={location} today={today} daily={daily} />
       <WeatherDaily daily={daily} />
       <WeatherWeek week={week} />
       <BottomSheet />
       {/* </Suspense> */}
+
       {isLoading && <LoadingSplash />}
     </>
   );

@@ -1,9 +1,8 @@
 import { Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import sigungu from '@/sigungu.json';
-import SearchInput from './components/SearchInput';
+// import SearchInput from './components/SearchInput';
 import WeatherWrap, { createParam } from './components/WeatherWrap';
-import sunnyImage from '@/public/sunny.jpg';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -59,10 +58,11 @@ export default function Home({ data }) {
 
   return (
     <main
-      className={`${inter.className} w-full h-screen px-10 box-border bg-cover bg-no-repeat bg-center overflow-hidden`}
-      style={{ backgroundImage: 'url(' + sunnyImage.src + ')' }}
+      className={`${inter.className} w-full h-screen px-10 overflow-hidden`}
+      // className={`${inter.className} w-full h-screen px-10 box-border bg-cover bg-no-repeat bg-center overflow-hidden`}
+      // style={{ backgroundImage: 'url(' + sunnyImage.src + ')' }}
     >
-      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 md:flex md:flex-col md:gap-6 relative pt-10 overflow-hidden'>
+      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 md:flex md:flex-col md:gap-6 pt-10 overflow-hidden'>
         {/* <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} execFunc={execFunc} /> */}
         <WeatherWrap />
       </div>

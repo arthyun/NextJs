@@ -3,11 +3,25 @@ import { DailyTypes } from './WeatherWrap';
 
 export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
   const [temp, setTemp] = useState<DailyTypes[]>([]);
-  const [rn1, setRn1] = useState<DailyTypes[]>([]);
+  const [sky, setSky] = useState<DailyTypes[]>([]);
+
+  const confirmSky = (value: string) => {
+    // 맑음(1), 구름많음(3), 흐림(4)
+    switch (value) {
+      case '1':
+        return '☀️';
+      case '3':
+        return '🌥️';
+      case '4':
+        return '☁️';
+      default:
+        return '☔️';
+    }
+  };
 
   useEffect(() => {
-    setTemp(() => daily.filter((item) => item.category === 'T1H'));
-    setRn1(() => daily.filter((item) => item.category === 'RN1'));
+    setTemp(daily.filter((item) => item.baseDate === item.fcstDate).filter((v) => v.category === 'TMP'));
+    setSky(daily.filter((item) => item.baseDate === item.fcstDate).filter((v) => v.category === 'SKY'));
   }, [daily]);
 
   return (
@@ -19,7 +33,7 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
             <li className='text-white text-lg' key={index}>
               <dl className='flex flex-col gap-2 items-center justify-center min-w-36 min-h-36'>
                 <dt>{item.fcstTime.substring(0, 2)}시</dt>
-                <dd className='text-4xl'>{rn1[index].fcstValue === '강수없음' ? '☀️' : '☔️'}</dd>
+                <dd className='text-4xl'>{confirmSky(sky[index].fcstValue)}</dd>
                 <dd>{item.fcstValue}°C</dd>
               </dl>
             </li>

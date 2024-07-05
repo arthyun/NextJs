@@ -1,7 +1,9 @@
-import React from 'react';
-import { DailyTypes, FetchTypes } from './WeatherWrap';
+import React, { useEffect, useState } from 'react';
+import { DailyTypes, FetchTypes, LocationTypes } from './WeatherWrap';
 
-export default function WeatherHeader({ location, today, daily }) {
+export default function WeatherHeader({ location, today, daily }: { location: LocationTypes[]; today: FetchTypes[]; daily: DailyTypes[] }) {
+  const [temp, setTemp] = useState<DailyTypes[]>([]);
+
   // 현재 날씨 분기처리
   const getWeatherDescription = (obsrValue: string) => {
     switch (obsrValue) {
@@ -24,17 +26,22 @@ export default function WeatherHeader({ location, today, daily }) {
     }
   };
 
-  const weatherValue = today?.filter((item: FetchTypes) => item.category === 'PTY')[0]?.obsrValue;
+  const weatherValue = today?.filter((item: FetchTypes) => item.category === 'PTY')?.[0]?.obsrValue;
+  const t1hValue = today?.filter((item: FetchTypes) => item.category === 'T1H')?.[0]?.obsrValue;
+
+  useEffect(() => {
+    setTemp(daily.filter((item) => item.baseDate === item.fcstDate).filter((v) => v.category === 'TMP'));
+  }, [daily]);
 
   return (
     <section className='xl:w-4/12 flex flex-col gap-4 justify-center items-center box-border text-white'>
       {/* T1H(기온), RN1(강수량), PTY(강수형태) */}
       <h3 className='text-lg'>{location[0]?.address?.region_2depth_name}</h3>
-      <p className='text-5xl'>{today?.filter((item: FetchTypes) => item.category === 'T1H')[0]?.obsrValue}°C</p>
-      <p className='text-sm'>{getWeatherDescription(weatherValue)}</p>
+      <p className='text-5xl'>{Math.ceil(Number(t1hValue))}°C</p>
+      <p className='text-sm'>{weatherValue && getWeatherDescription(weatherValue)}</p>
       <div className='flex gap-2 text-sm'>
-        <p>최저: {daily?.filter((item: DailyTypes) => item.category === 'T1H' && item.fcstTime === '0700')[0]?.fcstValue}°C</p>
-        <p>최고: {daily?.filter((item: DailyTypes) => item.category === 'T1H' && item.fcstTime === '1200')[0]?.fcstValue}°C</p>
+        <p>최저: {temp.find((item) => item.fcstTime === '0600')?.fcstValue}°C</p>
+        <p>최고: {temp.find((item) => item.fcstTime === '1400')?.fcstValue}°C</p>
       </div>
     </section>
   );

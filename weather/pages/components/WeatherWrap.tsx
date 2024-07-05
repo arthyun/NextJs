@@ -17,7 +17,7 @@ type ResBody = {
   [key: string]: string | number;
 };
 
-type LocationTypes = {
+export type LocationTypes = {
   address: {
     address_name: string;
     main_address_no: string;
@@ -93,7 +93,7 @@ export default function WeatherWrap() {
       numOfRows: '10',
       dataType: 'json',
       base_date: date,
-      base_time: '0630',
+      base_time: time,
       nx: lat,
       ny: lng
     };
@@ -103,23 +103,23 @@ export default function WeatherWrap() {
     return result;
   };
 
-  // 하루치 날씨 조회
-  const getDailyData = async (lat: number, lng: number, date: string) => {
-    const resBody: ResBody = {
-      serviceKey: process.env.NEXT_PUBLIC_VWORLD_KEY as string,
-      pageNo: '1',
-      numOfRows: '100',
-      dataType: 'json',
-      base_date: date,
-      base_time: '0630',
-      nx: lat,
-      ny: lng
-    };
-    const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?${createParam(resBody)}`);
-    const result = response.data.response.body.items.item;
-    setDaily(result);
-    return result;
-  };
+  // // 하루치 날씨 조회
+  // const getDailyData = async (lat: number, lng: number, date: string) => {
+  //   const resBody: ResBody = {
+  //     serviceKey: process.env.NEXT_PUBLIC_VWORLD_KEY as string,
+  //     pageNo: '1',
+  //     numOfRows: '100',
+  //     dataType: 'json',
+  //     base_date: date,
+  //     base_time: '0630',
+  //     nx: lat,
+  //     ny: lng
+  //   };
+  //   const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?${createParam(resBody)}`);
+  //   const result = response.data.response.body.items.item;
+  //   setDaily(result);
+  //   return result;
+  // };
 
   // 주간 날씨 조회
   const getWeekData = async (lat: number, lng: number, date: string) => {
@@ -135,6 +135,7 @@ export default function WeatherWrap() {
     };
     const response = await axios.get(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?${createParam(resBody)}`);
     const result = response.data.response.body.items.item;
+    setDaily(result);
     setWeek(result);
     return result;
   };
@@ -199,7 +200,7 @@ export default function WeatherWrap() {
         Promise.allSettled([
           curLocation(latitude, longitude),
           getCurData(otherGpsTransfer.getxLat(), otherGpsTransfer.getyLon(), resultDate, timezone),
-          getDailyData(otherGpsTransfer.getxLat(), otherGpsTransfer.getyLon(), resultDate),
+          // getDailyData(otherGpsTransfer.getxLat(), otherGpsTransfer.getyLon(), resultDate),
           getWeekData(otherGpsTransfer.getxLat(), otherGpsTransfer.getyLon(), resultDate)
         ])
           .then((res) => console.log('success'))

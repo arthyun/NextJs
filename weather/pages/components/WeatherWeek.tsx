@@ -23,7 +23,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
       // 우선 SKY로 필터링
       const skys = week.filter((item) => item.category === 'SKY');
       const tmps = week.filter((item) => item.category === 'TMP');
-      console.log(tmps);
+      // console.log(tmps);
 
       // 7일치 분기처리
       setDay1(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === new Date().getDate().toString().padStart(2, '0')));
@@ -36,13 +36,38 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
     }
   }, [week]);
 
-  // console.log(day1.find((item) => item.fcstTime === '1400'));
-  // console.log(day2.find((item) => item.fcstTime === '1400'));
-  // console.log(day3.find((item) => item.fcstTime === '1400'));
-  // console.log(day4.find((item) => item.fcstTime === '1400'));
-  // console.log(day5.find((item) => item.fcstTime === '1400'));
-  // console.log(day6.find((item) => item.fcstTime === '1400'));
-  // console.log(day7.find((item) => item.fcstTime === '1400'));
+  // "20240000"를 날짜로 변환 함수
+  const dateString = day1?.[0]?.fcstDate;
+  const changeDate = (dateString: string | undefined) => {
+    const year = Number(dateString?.substring(0, 4));
+    const month = Number(dateString?.substring(4, 6)) - 1;
+    const day = Number(dateString?.substring(6, 8));
+    return new Date(year, month, day);
+  };
+
+  // 요일 구하기 함수
+  const confirmWeekNameSwitch = (str: number) => {
+    switch (str) {
+      case 1:
+        return '월';
+      case 2:
+        return '화';
+      case 3:
+        return '수';
+      case 4:
+        return '목';
+      case 5:
+        return '금';
+      case 6:
+        return '토';
+      default:
+        return '일';
+    }
+  };
+  const confirmWeekName = (realDate: string) => {
+    const newDate = new Date(realDate);
+    return confirmWeekNameSwitch(newDate.getDay());
+  };
 
   return (
     <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
@@ -60,24 +85,27 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
           );
         })} */}
         <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border'>
-            <dt>지금</dt>
+          <dl className='flex min-w-16 py-6 box-border gap-4'>
+            <dt>오늘</dt>
             <dd>☀️</dd>
+            <dd>18°C</dd>
             <dd>28°C</dd>
           </dl>
         </li>
         <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border'>
-            <dt>오후 1시</dt>
+          <dl className='flex min-w-16 py-6 box-border gap-4'>
+            <dt>토</dt>
             <dd>☁️</dd>
             <dd>29°C</dd>
+            <dd>50°C</dd>
           </dl>
         </li>
         <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border'>
-            <dt>오후 2시</dt>
+          <dl className='flex min-w-16 py-6 box-border gap-4'>
+            <dt>일</dt>
             <dd>☔️</dd>
-            <dd>30°C</dd>
+            <dd>20°C</dd>
+            <dd>40°C</dd>
           </dl>
         </li>
       </ul>

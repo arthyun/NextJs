@@ -8,7 +8,7 @@ export default function WeatherHeader({ location, today, daily }: { location: Lo
   const getWeatherDescription = (obsrValue: string) => {
     switch (obsrValue) {
       case '0':
-        return '맑음';
+        return '비 없음';
       case '1':
         return '비';
       case '2':

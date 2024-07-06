@@ -140,6 +140,20 @@ export default function WeatherWrap() {
     return result;
   };
 
+  const setBackground = (value: string) => {
+    // 맑음(1), 구름많음(3), 흐림(4)
+    switch (value) {
+      case '1':
+        return sunnyImage;
+      case '3':
+        return foggyandsunnyImage;
+      case '4':
+        return foggyImage;
+      default:
+        return rainImage;
+    }
+  };
+
   useEffect(() => {
     // axios interceptors 부분
     axios.interceptors.request.use(
@@ -212,7 +226,14 @@ export default function WeatherWrap() {
   return (
     <>
       <div className='w-full h-full absolute top-0 left-0 -z-10 object-cover'>
-        <Image src={today?.filter((item: FetchTypes) => item.category === 'PTY')[0]?.obsrValue !== '0' ? rainImage : sunnyImage} alt='bg' fill />
+        <Image
+          src={setBackground(
+            week.filter((item) => item.category === 'SKY' && item.fcstDate === item.baseDate && item.fcstTime === new Date().getHours().toString().padStart(2, '0') + '00')?.[0]
+              ?.fcstValue
+          )}
+          alt='bg'
+          fill
+        />
       </div>
 
       {/* <Suspense fallback={<LoadingSplash />}> */}

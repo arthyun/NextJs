@@ -240,7 +240,7 @@ export default function WeatherWrap() {
       <WeatherHeader location={location} today={today} daily={daily} />
       <WeatherDaily daily={daily} />
       <WeatherWeek week={week} />
-      <BottomSheet />
+      {/* <BottomSheet /> */}
       {/* </Suspense> */}
 
       {isLoading && <LoadingSplash />}

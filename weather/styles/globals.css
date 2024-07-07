@@ -22,3 +22,12 @@ a {
   text-decoration: none;
   color: #333;
 }
+
+/* 스크롤바 없애기 */
+.dailyScrollArea {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.dailyScrollArea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}

@@ -27,7 +27,7 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
   return (
     <section className='xl:w-8/12 flex flex-col gap-2 justify-center box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
       <h3>🕙 시간별 일기예보</h3>
-      <ul className='flex gap-2 overflow-x-scroll'>
+      <ul className='dailyScrollArea flex gap-2 overflow-x-scroll'>
         {temp?.map((item, index) => {
           return (
             <li className='text-white text-lg' key={index}>

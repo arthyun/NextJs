@@ -37,7 +37,7 @@ export default function WeatherHeader({ location, today, daily }: { location: Lo
     <section className='xl:w-4/12 flex flex-col gap-4 justify-center items-center box-border text-white'>
       {/* T1H(기온), RN1(강수량), PTY(강수형태) */}
       <h3 className='text-lg'>{location[0]?.address?.region_2depth_name}</h3>
-      <p className='text-5xl'>{Math.ceil(Number(t1hValue))}°C</p>
+      <p className='text-7xl font-light'>{Math.ceil(Number(t1hValue ?? '0'))}°C</p>
       <p className='text-sm'>{weatherValue && getWeatherDescription(weatherValue)}</p>
       <div className='flex gap-2 text-sm'>
         <p>최저: {temp.find((item) => item.fcstTime === '0600')?.fcstValue}°C</p>

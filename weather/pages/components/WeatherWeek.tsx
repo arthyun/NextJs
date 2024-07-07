@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DailyTypes } from './WeatherWrap';
 
 type TempStructure = {
@@ -17,7 +17,8 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
 
   // 상태
   const [avg, setAvg] = useState<number>(0);
-  const [todayTmp, setTodayTmp] = useState<TempStructure>({
+  const [weekName, setWeekName] = useState<string[]>([]);
+  const [todayTemp, setTodayTemp] = useState<TempStructure>({
     weekName: '',
     minTemp: '0',
     maxTemp: '0'
@@ -49,10 +50,10 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
         return '일';
     }
   };
-  const confirmWeekName = (realDate: string | Date) => {
+  const confirmWeekName = useCallback((realDate: string | Date) => {
     const newDate = new Date(realDate);
     return confirmWeekNameSwitch(newDate.getDay());
-  };
+  }, []);
 
   // 오늘날 강수 확률 평균
   const popCarculator = (week: DailyTypes[], type: string) => {
@@ -67,6 +68,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
     }
   };
 
+  // 오늘날 최저, 최고 기온 확인
   const tmpCarculator = (week: DailyTypes[], type: string) => {
     if (type === 'today') {
       const todayTmp = week.filter((v: DailyTypes) => v.category === 'TMP' && v.fcstDate === v.baseDate);
@@ -74,7 +76,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
       let wkName = type === 'today' ? '오늘' : '확인필요';
       let minTmp = todayTmp.find((item) => item.fcstTime === '0600')?.fcstValue;
       let maxTmp = todayTmp.find((item) => item.fcstTime === '1400')?.fcstValue;
-      return setTodayTmp({
+      return setTodayTemp({
         weekName: wkName ?? '확인필요',
         minTemp: minTmp ?? '0',
         maxTemp: maxTmp ?? '0'
@@ -82,24 +84,35 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
     }
   };
 
+  // 요일 구하기
+  const weekNameCarculator = useCallback(
+    (week: DailyTypes[]) => {
+      let defineSet = new Set();
+      if (week !== undefined) {
+        week.forEach((item) => {
+          defineSet.add(confirmWeekName(changeDate(item.fcstDate)));
+        });
+        setWeekName(() => Array.from(defineSet) as string[]);
+      }
+    },
+    [confirmWeekName]
+  );
+
   useEffect(() => {
     // week 배열 데이터 들어온 후에 동작
     if (week.length > 0) {
-      // // 7일치 분기처리
-      // setDay1(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === new Date().getDate().toString().padStart(2, '0')));
-      // setDay2(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 1).toString().padStart(2, '0')));
-      // setDay3(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 2).toString().padStart(2, '0')));
-      // setDay4(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 3).toString().padStart(2, '0')));
-      // setDay5(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 4).toString().padStart(2, '0')));
-      // setDay6(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 5).toString().padStart(2, '0')));
-      // setDay7(() => skys.filter((item) => item.fcstDate.slice(item.fcstDate.length - 2) === (new Date().getDate() + 6).toString().padStart(2, '0')));
-
       // 오늘날 강수 확률 평균
       popCarculator(week, 'today');
       // 오늘날 기온
       tmpCarculator(week, 'today');
+      // 요일 구하기
+      weekNameCarculator(week);
     }
-  }, [week]);
+  }, [week, weekNameCarculator]);
+
+  useEffect(() => {
+    if (weekName.length > 0) console.log(weekName);
+  }, [weekName]);
 
   return (
     <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
@@ -118,10 +131,10 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
         })} */}
         <li className='border-b-2 border-black'>
           <dl className='flex min-w-16 py-6 box-border gap-4'>
-            <dt>{todayTmp?.weekName}</dt>
+            <dt>{todayTemp?.weekName}</dt>
             <dd>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
-            <dd>{todayTmp?.minTemp}°C</dd>
-            <dd>{todayTmp?.maxTemp}°C</dd>
+            <dd>{todayTemp?.minTemp}°C</dd>
+            <dd>{todayTemp?.maxTemp}°C</dd>
           </dl>
         </li>
         <li className='border-b-2 border-black'>

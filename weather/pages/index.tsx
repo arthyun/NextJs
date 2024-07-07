@@ -1,8 +1,8 @@
 import { Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import sigungu from '@/sigungu.json';
-// import SearchInput from './components/SearchInput';
 import WeatherWrap, { createParam } from './components/WeatherWrap';
+// import SearchInput from './components/SearchInput';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +27,8 @@ export default function Home({ data }) {
   // console.log(sigungu['data']);
   // const defineSigungu = Object.entries(sigungu).map((item) => [item[0].split('/')[1], item[1]]);
   // const resultSigungu = Object.fromEntries(defineSigungu);
+
+  const router = useRouter();
 
   // 검색 함수
   const execFunc = (text: string) => {
@@ -54,15 +56,13 @@ export default function Home({ data }) {
     }
   };
 
-  const router = useRouter();
-
   return (
     <main
-      className={`${inter.className} w-full h-screen px-10 overflow-hidden`}
+      className={`${inter.className} w-full h-screen px-10 content-center overflow-hidden`}
       // className={`${inter.className} w-full h-screen px-10 box-border bg-cover bg-no-repeat bg-center overflow-hidden`}
       // style={{ backgroundImage: 'url(' + sunnyImage.src + ')' }}
     >
-      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 md:flex md:flex-col md:gap-10 pt-10 overflow-hidden'>
+      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 2sm:flex 2sm:flex-col 2sm:gap-10 overflow-hidden'>
         {/* <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} execFunc={execFunc} /> */}
         <WeatherWrap />
       </div>
@@ -70,7 +70,7 @@ export default function Home({ data }) {
   );
 }
 
-// // SSR
+// // SSR (위치 정보를 서버에서 가져올수 없어 미사용)
 // export async function getServerSideProps({ query }) {
 //   // console.log(query);
 

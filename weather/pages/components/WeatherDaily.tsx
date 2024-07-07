@@ -19,6 +19,8 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
     }
   };
 
+  const nowHour = new Date().getHours().toString().padStart(2, '0') + '00';
+
   useEffect(() => {
     setTemp(daily.filter((item) => item.baseDate === item.fcstDate).filter((v) => v.category === 'TMP'));
     setSky(daily.filter((item) => item.baseDate === item.fcstDate).filter((v) => v.category === 'SKY'));
@@ -30,7 +32,7 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
       <ul className='dailyScrollArea flex gap-2 overflow-x-scroll'>
         {temp?.map((item, index) => {
           return (
-            <li className='text-white text-lg' key={index}>
+            <li className={`text-white text-lg ${item.fcstTime === nowHour && 'bg-white bg-opacity-20 rounded-lg'} font-light`} key={index}>
               <dl className='flex flex-col gap-2 items-center justify-center min-w-36 min-h-36'>
                 <dt>{item.fcstTime.substring(0, 2)}시</dt>
                 <dd className='text-4xl'>{confirmSky(sky[index].fcstValue)}</dd>

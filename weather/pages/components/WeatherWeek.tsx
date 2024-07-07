@@ -1,28 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DailyTypes } from './WeatherWrap';
 
-type TempStructure = {
+type WeekResultTypes = {
   weekName: string;
-  minTemp: string;
-  maxTemp: string;
+  data: string[];
+  rainAvg: number;
 };
 
 export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
-  // console.log(week);
-  // console.log(week.filter((item) => item.category === 'PCP')); //강수량
-  // console.log(week.filter((item) => item.category === 'POP')); //강수확률
-  // console.log(week.filter((item) => item.category === 'PTY')); //강수형태
-  // console.log(week.filter((item) => item.category === 'SKY')); //하늘상태
-  // console.log(week.filter((item) => item.category === 'TMP')); //기온
+  // PCP - 강수량
+  // POP - 강수확률
+  // PTY - 강수형태
+  // SKY - 하늘상태
+  // TMP - 기온
 
   // 상태
   const [avg, setAvg] = useState<number>(0);
-  const [weekName, setWeekName] = useState<string[]>([]);
-  const [todayTemp, setTodayTemp] = useState<TempStructure>({
-    weekName: '',
-    minTemp: '0',
-    maxTemp: '0'
-  });
+  const [weekWeather, setWeekWeather] = useState<WeekResultTypes[]>([]);
 
   // "20240000" 형식의 날짜를 변환해주는 함수
   const changeDate = (dateString: string | undefined) => {
@@ -55,104 +49,146 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
     return confirmWeekNameSwitch(newDate.getDay());
   }, []);
 
-  // 오늘날 강수 확률 평균
-  const popCarculator = (week: DailyTypes[], type: string) => {
-    if (type === 'today') {
-      const todayPop = week.filter((v: DailyTypes) => v.category === 'POP' && v.fcstDate === v.baseDate);
-      let cnt = 0;
-      todayPop.forEach((item: DailyTypes) => {
-        cnt += parseInt(item.fcstValue);
-        return cnt;
-      });
-      return setAvg(Math.floor(cnt / todayPop.length));
-    }
-  };
-
-  // 오늘날 최저, 최고 기온 확인
-  const tmpCarculator = (week: DailyTypes[], type: string) => {
-    if (type === 'today') {
-      const todayTmp = week.filter((v: DailyTypes) => v.category === 'TMP' && v.fcstDate === v.baseDate);
-      // let wkName = confirmWeekName(changeDate(todayTmp[0].fcstDate));
-      let wkName = type === 'today' ? '오늘' : '확인필요';
-      let minTmp = todayTmp.find((item) => item.fcstTime === '0600')?.fcstValue;
-      let maxTmp = todayTmp.find((item) => item.fcstTime === '1400')?.fcstValue;
-      return setTodayTemp({
-        weekName: wkName ?? '확인필요',
-        minTemp: minTmp ?? '0',
-        maxTemp: maxTmp ?? '0'
-      });
-    }
-  };
-
-  // 요일 구하기
-  const weekNameCarculator = useCallback(
+  // 요일, 강수량평균, 최저, 최고기온 계산 함수
+  const weatherCarculator = useCallback(
     (week: DailyTypes[]) => {
-      let defineSet = new Set();
+      // 요일명 계산
+      let weekNameSet = new Set();
       if (week !== undefined) {
         week.forEach((item) => {
-          defineSet.add(confirmWeekName(changeDate(item.fcstDate)));
+          weekNameSet.add(confirmWeekName(changeDate(item.fcstDate)));
         });
-        setWeekName(() => Array.from(defineSet) as string[]);
+        const weekNameTotal = Array.from(weekNameSet) as string[];
+
+        // 일주일치 계산
+        // 오늘
+        const todayTotal = week.filter((item) => item.category === 'TMP' && item.baseDate === item.fcstDate);
+        let todaySet = new Set();
+        todayTotal.forEach((item) => todaySet.add(item.fcstValue));
+        const todayResult = Array.from(todaySet).sort() as string[];
+        // 오늘 강수확률
+        const todayPop = week.filter((v: DailyTypes) => v.category === 'POP' && v.baseDate === v.fcstDate);
+        let todayCnt = 0;
+        todayPop.forEach((item: DailyTypes) => (todayCnt += parseInt(item.fcstValue)));
+        const todayPopAvg = Math.floor(todayCnt / todayPop.length);
+
+        // 내일
+        const firstTotal = week.filter((v) => v.category === 'TMP' && v.fcstDate === getNextDayFormatted(1));
+        let firstSet = new Set();
+        firstTotal.forEach((item) => firstSet.add(item.fcstValue));
+        const firstResult = Array.from(firstSet).sort() as string[];
+        // 내일 강수확률
+        const firstPop = week.filter((v: DailyTypes) => v.category === 'POP' && v.fcstDate === getNextDayFormatted(1));
+        let firstCnt = 0;
+        firstPop.forEach((item: DailyTypes) => (firstCnt += parseInt(item.fcstValue)));
+        const firstPopAvg = Math.floor(firstCnt / firstPop.length);
+
+        // 모레
+        const secondTotal = week.filter((v) => v.category === 'TMP' && v.fcstDate === getNextDayFormatted(2));
+        let secondSet = new Set();
+        secondTotal.forEach((item) => secondSet.add(item.fcstValue));
+        const secondResult = Array.from(secondSet).sort() as string[];
+        // 모레 강수확률
+        const secondPop = week.filter((v: DailyTypes) => v.category === 'POP' && v.fcstDate === getNextDayFormatted(2));
+        let secondCnt = 0;
+        secondPop.forEach((item: DailyTypes) => (secondCnt += parseInt(item.fcstValue)));
+        const secondPopAvg = Math.floor(secondCnt / secondPop.length);
+
+        // 글피
+        const thirdTotal = week.filter((v) => v.category === 'TMP' && v.fcstDate === getNextDayFormatted(3));
+        let thirdSet = new Set();
+        thirdTotal.forEach((item) => thirdSet.add(item.fcstValue));
+        const thirdResult = Array.from(thirdSet).sort() as string[];
+        // 글피 강수확률
+        const thirdPop = week.filter((v: DailyTypes) => v.category === 'POP' && v.fcstDate === getNextDayFormatted(3));
+        let thirdCnt = 0;
+        thirdPop.forEach((item: DailyTypes) => (thirdCnt += parseInt(item.fcstValue)));
+        const thirdPopAvg = Math.floor(thirdCnt / thirdPop.length);
+
+        // 최종 결과물 ({weekName: '', data: ''} 형태로 제작할 것)
+        const realResult = weekNameTotal.reduce((acc: WeekResultTypes[], cur, index) => {
+          acc.push({
+            weekName: cur,
+            data: index === 0 ? todayResult : index === 1 ? firstResult : index === 2 ? secondResult : thirdResult,
+            rainAvg: index === 0 ? todayPopAvg : index === 1 ? firstPopAvg : index === 2 ? secondPopAvg : thirdPopAvg
+          });
+          return acc;
+        }, []);
+        return setWeekWeather(realResult);
       }
     },
     [confirmWeekName]
   );
 
+  // 다음날 날짜 형식에 맞춰 출력하기
+  const getNextDayFormatted = (num: number) => {
+    // 현재 날짜를 가져옴
+    let today = new Date();
+    // 다음 날 날짜를 구함
+    today.setDate(today.getDate() + num);
+    // 연도, 월, 일 값을 추출함
+    let year = today.getFullYear();
+    let month: string | number = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+    let day: string | number = today.getDate();
+    // 월과 일이 한 자리 수일 경우 앞에 0을 붙임
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+    // 최종 형식으로 반환
+    return `${year}${month}${day}`;
+  };
+
   useEffect(() => {
     // week 배열 데이터 들어온 후에 동작
     if (week.length > 0) {
-      // 오늘날 강수 확률 평균
-      popCarculator(week, 'today');
-      // 오늘날 기온
-      tmpCarculator(week, 'today');
-      // 요일 구하기
-      weekNameCarculator(week);
+      // 전체 데이터 계산식을 포함한 총 집합
+      weatherCarculator(week);
     }
-  }, [week, weekNameCarculator]);
-
-  useEffect(() => {
-    if (weekName.length > 0) console.log(weekName);
-  }, [weekName]);
+  }, [week, weatherCarculator]);
 
   return (
     <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
       <h3>🗓️ 주간 일기예보</h3>
-      <ul className='flex flex-col gap-2'>
-        {/* {temp?.map((item, index) => {
+      <ul className='weekScrollArea flex flex-col gap-2 h-[285px] mt-4 overflow-y-scroll'>
+        {weekWeather?.map((item, index) => {
           return (
-            <li className='text-white text-lg' key={index}>
-              <dl className='flex flex-col gap-2 items-center justify-center min-w-36 min-h-36'>
-                <dt>{item.fcstTime.substring(0, 2)}시</dt>
-                <dd className='text-4xl'>{rn1[index].fcstValue === '강수없음' ? '☀️' : '☔️'}</dd>
-                <dd>{item.fcstValue}°C</dd>
+            <li className='border-b-[1px] border-[#bbb]' key={index}>
+              <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
+                <dt className='w-[10%] font-normal'>{item.weekName}</dt>
+                <dd className='w-[10%]'>{item.rainAvg > 33 && item.rainAvg < 66 ? '☁️' : item.rainAvg > 66 && item.rainAvg <= 100 ? '☔️' : '☀️'} </dd>
+                <dd className='w-[15%]'>{item.data[0]}°C</dd>
+                <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
+                <dd className='w-[15%]'>{item.data.length !== 1 ? item.data[weekWeather.length - 1] : item.data[0]}°C</dd>
               </dl>
             </li>
           );
-        })} */}
-        <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border gap-4'>
-            <dt>{todayTemp?.weekName}</dt>
-            <dd>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
-            <dd>{todayTemp?.minTemp}°C</dd>
-            <dd>{todayTemp?.maxTemp}°C</dd>
+        })}
+        {/* <li className='border-b-[1px] border-[#bbb]'>
+          <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
+            <dt className='w-[10%] font-normal'>토</dt>
+            <dd className='w-[10%]'>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
+            <dd className='w-[15%]'>29°C</dd>
+            <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
+            <dd className='w-[15%]'>50°C</dd>
           </dl>
         </li>
-        <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border gap-4'>
-            <dt>토</dt>
-            <dd>☁️</dd>
-            <dd>29°C</dd>
-            <dd>50°C</dd>
+        <li className='border-b-[1px] border-[#bbb]'>
+          <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
+            <dt className='w-[10%] font-normal'>토</dt>
+            <dd className='w-[10%]'>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
+            <dd className='w-[15%]'>29°C</dd>
+            <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
+            <dd className='w-[15%]'>50°C</dd>
           </dl>
-        </li>
-        <li className='border-b-2 border-black'>
-          <dl className='flex min-w-16 py-6 box-border gap-4'>
-            <dt>일</dt>
-            <dd>☔️</dd>
-            <dd>20°C</dd>
-            <dd>40°C</dd>
+        </li>{' '}
+        <li className='border-b-[1px] border-[#bbb]'>
+          <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
+            <dt className='w-[10%] font-normal'>토</dt>
+            <dd className='w-[10%]'>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
+            <dd className='w-[15%]'>29°C</dd>
+            <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
+            <dd className='w-[15%]'>50°C</dd>
           </dl>
-        </li>
+        </li> */}
       </ul>
     </section>
   );

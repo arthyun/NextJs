@@ -24,10 +24,12 @@ a {
 }
 
 /* 스크롤바 없애기 */
-.dailyScrollArea {
+.dailyScrollArea,
+.weekScrollArea {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.dailyScrollArea::-webkit-scrollbar {
+.dailyScrollArea::-webkit-scrollbar,
+.weekScrollArea::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }

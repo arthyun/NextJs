@@ -162,7 +162,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
             </li>
           );
         })}
-        <li className='border-b-[1px] border-[#bbb]'>
+        {/* <li className='border-b-[1px] border-[#bbb]'>
           <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
             <dt className='w-[10%] font-normal'>토</dt>
             <dd className='w-[10%]'>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
@@ -188,7 +188,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
             <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
             <dd className='w-[15%]'>50°C</dd>
           </dl>
-        </li>
+        </li> */}
       </ul>
     </section>
   );

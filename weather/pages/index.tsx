@@ -62,7 +62,7 @@ export default function Home({ data }) {
       // className={`${inter.className} w-full h-screen px-10 box-border bg-cover bg-no-repeat bg-center overflow-hidden`}
       // style={{ backgroundImage: 'url(' + sunnyImage.src + ')' }}
     >
-      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 2sm:flex 2sm:flex-col 2sm:gap-10 overflow-hidden'>
+      <div className='w-full xl:flex xl:flex-row xl:flex-wrap xl:gap-0 sm:gap-8 2sm:flex 2sm:flex-col 2sm:gap-10 overflow-hidden'>
         {/* <SearchInput type={`text`} placeholder={`원하는 지역을 입력하세요`} onChange={() => console.log('changed')} execFunc={execFunc} /> */}
         <WeatherWrap />
       </div>

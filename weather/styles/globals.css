@@ -31,5 +31,6 @@ a {
 }
 .dailyScrollArea::-webkit-scrollbar,
 .weekScrollArea::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
+  display: none; /* Chrome, Safari, Opera */
 }
+

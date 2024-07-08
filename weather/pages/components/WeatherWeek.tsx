@@ -146,9 +146,9 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
   }, [week, weatherCarculator]);
 
   return (
-    <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4 h-auto'>
+    <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4 lg:h-[285px] md:h-[235px] sm:h-[235px] 2sm:h-[235px] overflow-hidden'>
       <h3>🗓️ 주간 일기예보</h3>
-      <ul className='weekScrollArea flex flex-col gap-2 mt-4 md:h-[210px] 2sm:h-[200px] overflow-y-scroll'>
+      <ul className='weekScrollArea flex flex-col gap-2 mt-4 lg:h-[210px] md:h-[180px] 2sm:h-[150px] overflow-y-scroll'>
         {weekWeather?.map((item, index) => {
           return (
             <li className='border-b-[1px] border-[#bbb]' key={index}>

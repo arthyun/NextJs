@@ -58,7 +58,7 @@ export default function Home({ data }) {
 
   return (
     <main
-      className={`${inter.className} w-full h-screen px-10 content-center overflow-hidden`}
+      className={`${inter.className} w-full h-screen px-10 content-center overflow-hidden box-border md:py-10 md:px-10 2sm:py-10 2sm:px-4`}
       // className={`${inter.className} w-full h-screen px-10 box-border bg-cover bg-no-repeat bg-center overflow-hidden`}
       // style={{ backgroundImage: 'url(' + sunnyImage.src + ')' }}
     >

@@ -146,23 +146,23 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
   }, [week, weatherCarculator]);
 
   return (
-    <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
+    <section className='xl:w-full xl:mt-6 md:mt-0 box-border rounded-xl text-white bg-black bg-opacity-15 p-4 md:h-[300px] 2sm:h-[180px]'>
       <h3>🗓️ 주간 일기예보</h3>
-      <ul className='weekScrollArea flex flex-col gap-2 h-[285px] mt-4 overflow-y-scroll'>
+      <ul className='weekScrollArea flex flex-col gap-2 mt-4 2sm:h-[240px] overflow-y-scroll'>
         {weekWeather?.map((item, index) => {
           return (
             <li className='border-b-[1px] border-[#bbb]' key={index}>
-              <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
-                <dt className='w-[10%] font-normal'>{item.weekName}</dt>
-                <dd className='w-[10%]'>{item.rainAvg > 33 && item.rainAvg < 66 ? '☁️' : item.rainAvg > 66 && item.rainAvg <= 100 ? '☔️' : '☀️'} </dd>
-                <dd className='w-[15%]'>{item.data[0]}°C</dd>
-                <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
-                <dd className='w-[15%]'>{item.data.length !== 1 ? item.data[weekWeather.length - 1] : item.data[0]}°C</dd>
+              <dl className='flex min-w-16 py-4 box-border items-center text-center font-light md:text-[22px] 2sm:text-[14px]'>
+                <dt className='font-normal md:w-[10%] 2sm:w-[15%]'>{item.weekName}</dt>
+                <dd className='md:w-[10%] 2sm:w-[15%]'>{item.rainAvg > 33 && item.rainAvg < 66 ? '☁️' : item.rainAvg > 66 && item.rainAvg <= 100 ? '☔️' : '☀️'} </dd>
+                <dd className='md:w-[15%] 2sm:w-[20%]'>{item.data[0]}°C</dd>
+                <dd className='block h-[10px] bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg overflow-hidden md:w-[50%] 2sm:w-[30%]'><span className='block w-[10px] h-[10px] bg-transparent border-2 border-[#fff] rounded-lg indent-[999px] overflow-hidden relative' style={{ left: item.rainAvg ? `${item.rainAvg}%` : '0%' }}>circle</span></dd>
+                <dd className='md:w-[15%] 2sm:w-[20%]'>{item.data.length !== 1 ? item.data[weekWeather.length - 1] : item.data[0]}°C</dd>
               </dl>
             </li>
           );
         })}
-        {/* <li className='border-b-[1px] border-[#bbb]'>
+        <li className='border-b-[1px] border-[#bbb]'>
           <dl className='flex min-w-16 py-4 box-border items-center text-center text-[20px] font-light'>
             <dt className='w-[10%] font-normal'>토</dt>
             <dd className='w-[10%]'>{avg > 33 && avg < 66 ? '☁️' : avg > 66 && avg <= 100 ? '☔️' : '☀️'} </dd>
@@ -188,7 +188,7 @@ export default function WeatherWeek({ week }: { week: DailyTypes[] }) {
             <dd className='block w-[50%] min-w-20 h-[14px] bg-orange-400 rounded-lg'></dd>
             <dd className='w-[15%]'>50°C</dd>
           </dl>
-        </li> */}
+        </li>
       </ul>
     </section>
   );

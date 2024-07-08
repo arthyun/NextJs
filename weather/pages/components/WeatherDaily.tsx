@@ -29,13 +29,13 @@ export default function WeatherDaily({ daily }: { daily: DailyTypes[] }) {
   return (
     <section className='xl:w-8/12 flex flex-col gap-2 justify-center box-border rounded-xl text-white bg-black bg-opacity-15 p-4'>
       <h3>🕙 시간별 일기예보</h3>
-      <ul className='dailyScrollArea flex gap-2 overflow-x-scroll'>
+      <ul className='dailyScrollArea flex mt-4 overflow-x-scroll md:gap-2 2sm:gap-0'>
         {temp?.map((item, index) => {
           return (
-            <li className={`text-white text-lg ${item.fcstTime === nowHour && 'bg-white bg-opacity-20 rounded-lg'} font-light`} key={index}>
-              <dl className='flex flex-col gap-2 items-center justify-center min-w-36 min-h-36'>
+            <li className={`text-white ${item.fcstTime === nowHour && 'bg-white bg-opacity-20 rounded-lg'} font-light box-border md:text-lg md:p-0 2sm:text-[14px] 2sm:p-2`} key={index}>
+              <dl className='flex flex-col gap-2 items-center justify-center md:min-w-36 md:min-h-36 2sm:w-20 2sm:h-20 2sm:gap-[5px]'>
                 <dt>{item.fcstTime.substring(0, 2)}시</dt>
-                <dd className='text-4xl'>{confirmSky(sky[index].fcstValue)}</dd>
+                <dd className='md:text-4xl 2sm:text-3xl'>{confirmSky(sky[index].fcstValue)}</dd>
                 <dd>{item.fcstValue}°C</dd>
               </dl>
             </li>

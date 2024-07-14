@@ -17,6 +17,7 @@ app.use(
 interface ServerToClientEvents {
   join_room: (roomName: string, callback: () => void) => void;
   message: (roomName: string, msg: string) => void;
+  live: (callback: () => void) => void;
 }
 
 // Socket.io
@@ -49,6 +50,13 @@ wsServer.on('connection', (socket) => {
   socket.on('message', (roomName, msg) => {
     socket.to(roomName).emit('message', roomName, msg);
   });
+
+  // // 테스트
+  // setInterval(async () => {
+  //   const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+  //   const result = await response.json();
+  //   socket.emit('live', result);
+  // }, 3000);
 });
 
 // Express Server Listen

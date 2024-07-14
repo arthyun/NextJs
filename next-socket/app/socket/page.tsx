@@ -8,6 +8,7 @@ interface ClientToServerEvents {
   join_room: (roomName: string, callback: () => void) => void;
   message: (roomName: string, msg: string) => void;
   new_message: (msg: string) => void;
+  live: (result: any) => void;
 }
 
 /* Component */
@@ -28,6 +29,11 @@ const Page = () => {
       // console.log('메세지: ', msg);
       setMsgList((prev) => [...prev, `Another: ${msg}`]);
     });
+
+    // // 테스트
+    // socket.current.on('live', (result) => {
+    //   console.log(result);
+    // });
 
     /* 화면 이동 시 Socket 연결 끊기 */
     return () => {

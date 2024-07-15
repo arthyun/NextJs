@@ -2,6 +2,8 @@
 
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import JoinRoom from './JoinRoom';
+import SendMessage from './SendMessage';
 
 /* Types */
 interface ClientToServerEvents {
@@ -9,15 +11,21 @@ interface ClientToServerEvents {
   message: (roomName: string, msg: string) => void;
   new_message: (msg: string) => void;
   live: (result: any) => void;
+  alarm: (alarm: string) => void;
 }
 
 /* Component */
 const Chat = () => {
+  // States
   const socket = useRef<Socket<ClientToServerEvents>>();
   const [display, setDisplay] = useState<boolean>(false);
   const [roomName, setRoomName] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [msgList, setMsgList] = useState<string[]>([]);
+  const [alarm, setAlarm] = useState<boolean>(false);
+
+  // Ref
+  const scrollableRef = useRef<HTMLUListElement | null>(null);
 
   /* Side Effect */
   useEffect(() => {
@@ -25,9 +33,12 @@ const Chat = () => {
     socket.current = io('http://localhost:4000');
     /* Socket 이벤트 */
     socket.current.on('message', (roomName, msg) => {
-      // console.log('방: ', roomName);
-      // console.log('메세지: ', msg);
       setMsgList((prev) => [...prev, `Another: ${msg}`]);
+      setAlarm(() => true); // 새 메세지가 도착하여 알림을 띄움
+    });
+    socket.current.on('alarm', (alarm) => {
+      console.log(alarm);
+      setMsgList((prev) => [...prev, `All: ${alarm}`]);
     });
 
     // // 테스트
@@ -53,6 +64,7 @@ const Chat = () => {
       // setRoomName(''); // 여기서 초기화 해버리면 다른 이벤트에서 roomName을 참조 불가
     }
   };
+
   const onSubmitSendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (socket.current !== null && socket.current !== undefined) {
@@ -60,48 +72,29 @@ const Chat = () => {
       setMsgList((prev) => [...prev, `You: ${message}`]);
       setMessage(''); // 모두 작동 후 초기화
     }
+    // 채팅 보낼때마다 스크롤 하단으로..
+    if (scrollableRef.current) {
+      scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
+    }
   };
 
   return (
-    <section>
-      <h1>Chat</h1>
+    <section className=''>
+      <h1 className='font-bold text-3xl text-center'>
+        <code>Welcome to Chat Service!</code>
+      </h1>
       {!display ? (
-        <article>
-          <h1>Join Room</h1>
-          <form onSubmit={onSubmitJoinRoom}>
-            <input
-              className='text-red-400'
-              type='text'
-              placeholder='Room name'
-              required
-              value={roomName}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value)}
-            />
-            <button type='submit'>Send</button>
-          </form>
-        </article>
+        <JoinRoom onSubmitJoinRoom={onSubmitJoinRoom} roomName={roomName} setRoomName={setRoomName} />
       ) : (
-        <article>
-          <h1>Send Message</h1>
-          <form onSubmit={onSubmitSendMessage}>
-            <input
-              className='text-red-400'
-              type='text'
-              placeholder='Send Message'
-              required
-              value={message}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value)}
-            />
-            <button type='submit'>Send</button>
-          </form>
-          <ul className='messageArea'>
-            {msgList.length > 0
-              ? msgList.map((list, index) => {
-                  return <li key={index}>{list}</li>;
-                })
-              : null}
-          </ul>
-        </article>
+        <SendMessage
+          alarm={alarm}
+          setAlarm={setAlarm}
+          onSubmitSendMessage={onSubmitSendMessage}
+          message={message}
+          setMessage={setMessage}
+          msgList={msgList}
+          scrollableRef={scrollableRef}
+        />
       )}
     </section>
   );

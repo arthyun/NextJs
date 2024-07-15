@@ -18,6 +18,7 @@ interface ServerToClientEvents {
   join_room: (roomName: string, callback: () => void) => void;
   message: (roomName: string, msg: string) => void;
   live: (callback: () => void) => void;
+  alarm: (alarm: string) => void;
 }
 
 // Socket.io
@@ -41,8 +42,10 @@ wsServer.on('connection', (socket) => {
   socket.on('join_room', (roomName, callback) => {
     socket.join(roomName);
     callback();
-    // 현재 방 상태 확인
-    const rooms = wsServer.sockets.adapter.rooms;
+    // 방 전체에 알림
+    socket.to(roomName).emit('alarm', '상대방이 입장하였습니다.');
+    // // 현재 방 상태 확인
+    // const rooms = wsServer.sockets.adapter.rooms;
     // console.log(rooms);
   });
 

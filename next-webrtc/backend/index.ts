@@ -61,7 +61,6 @@ wsServer.on('connection', (socket) => {
 
   // iceCandidate를 수신하는 이벤트 (타겟은 모든방임)
   socket.on('ice', (ice, roomName) => {
-    // console.log(ice, roomName);
     socket.to(roomName).emit('ice', ice, roomName);
   });
 

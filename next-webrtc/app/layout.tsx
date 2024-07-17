@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${inter.className} bg-cyan-200 p-6 box-border`}>{children}</body>
+      <Script src='https://webrtc.github.io/adapter/adapter-latest.js'></Script>
     </html>
   );
 }

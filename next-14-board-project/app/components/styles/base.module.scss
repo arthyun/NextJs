@@ -1,0 +1,30 @@
+// BaseInput.tsx
+.base_input {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  box-sizing: border-box;
+
+  & input {
+    border: 0;
+    outline: 0;
+    font-size: 18px;
+    padding: 10px;
+  }
+}
+
+// BaseButton.tsx
+.base_button {
+  display: block;
+  height: 35px;
+  padding: 0 15px;
+  color: var(--white);
+  background: var(--black);
+  border-radius: 25px;
+  box-sizing: border-box;
+  &:hover {
+    color: var(--black);
+    background: var(--gray);
+  }
+}

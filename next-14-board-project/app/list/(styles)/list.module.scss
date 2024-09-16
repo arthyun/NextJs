@@ -1,0 +1,10 @@
+.list_section {
+  width: 100%;
+  padding: 2rem 0;
+  box-sizing: border-box;
+
+  & .list_div {
+    margin-top: 1rem;
+    border: 1px solid var(--black);
+  }
+}

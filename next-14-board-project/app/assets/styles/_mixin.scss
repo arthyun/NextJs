@@ -1,0 +1,8 @@
+@mixin common_structure {
+  width: 100%;
+  font-size: var(--font-30);
+  font-weight: bold;
+  padding: 15px;
+  background: var(--white);
+  box-sizing: border-box;
+}

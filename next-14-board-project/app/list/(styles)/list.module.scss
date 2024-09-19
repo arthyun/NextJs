@@ -1,10 +1,98 @@
 .list_section {
   width: 100%;
+  min-height: 80vh;
   padding: 2rem 0;
   box-sizing: border-box;
 
-  & .list_div {
-    margin-top: 1rem;
-    border: 1px solid var(--black);
+  & .list_article {
+    margin: 2rem 0;
+    // border: 1px solid var(--black);
+
+    > h3 {
+      display: none;
+    }
+
+    > ul {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      > li {
+        & .list_wrap {
+          display: flex;
+          flex-direction: column;
+          row-gap: 12px;
+          padding: 20px 25px;
+          //   border: 1px solid var(--gray);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.05),
+            0 10px 10px rgba(0, 0, 0, 0.22);
+          border-radius: 15px;
+          background: #f5f5f5;
+          box-sizing: border-box;
+          overflow: hidden;
+          cursor: pointer;
+
+          & .top_section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            > span:nth-last-child(1) {
+              font-size: var(--font-12);
+              color: #999;
+            }
+          }
+          & .center_section {
+            > span {
+              font-size: var(--font-20);
+              font-weight: 700;
+            }
+          }
+          & .bottom_section {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
+
+// skeleton ui
+.skeleton_ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  > li {
+    & .skeleton_list_wrap {
+      display: flex;
+      flex-direction: column;
+      row-gap: 12px;
+      height: 127px;
+      padding: 20px 25px;
+      //   border: 1px solid var(--gray);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.05),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+      border-radius: 15px;
+      background: #f5f5f5;
+      box-sizing: border-box;
+      overflow: hidden;
+      cursor: pointer;
+
+      & .skeleton_top_section {
+        display: flex;
+        gap: 10px;
+      }
+      & .skeleton_center_section {
+        > span {
+          font-size: var(--font-20);
+          font-weight: 700;
+        }
+      }
+      & .skeleton_bottom_section {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+    }
   }
 }

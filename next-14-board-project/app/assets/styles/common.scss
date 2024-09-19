@@ -14,6 +14,10 @@ header {
     align-items: center;
     box-sizing: border-box;
 
+    > h1 {
+      display: none;
+    }
+
     > ul {
       display: flex;
       align-items: center;
@@ -49,6 +53,10 @@ header {
       padding: 0 15px;
       overflow: hidden;
 
+      > h3 {
+        display: none;
+      }
+
       > svg {
         display: block;
         width: 25px;
@@ -65,16 +73,19 @@ header {
       box-sizing: border-box;
     }
 
-    // & .right_article {
-    // }
+    & .right_article {
+      > h3 {
+        display: none;
+      }
+    }
   }
 }
 
 main {
   width: 100%;
   // height: 2000px; // scroll test용
-  padding: 0 15px;
-  background: bisque;
+  padding: 0 10%;
+  // background: bisque;
   overflow: hidden;
 
   & .section_home {

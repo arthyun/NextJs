@@ -6,8 +6,8 @@ const Footer = () => {
       <p>© 2024. arthyun. all rights reserved.</p>
       <div>
         <h3>Contact Me ↓↓↓</h3>
-        <a href='tel:+821072128581'>Phone</a>
-        <a href='mailto:heun3316@naver.com'>Email</a>
+        <a href='tel:+821072128581'>휴대폰</a>
+        <a href='mailto:heun3316@naver.com'>이메일</a>
       </div>
     </footer>
   );

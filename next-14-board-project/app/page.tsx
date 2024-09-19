@@ -2,10 +2,10 @@ export default function Home() {
   return (
     <section className='section_home'>
       <h1>Home Page</h1>
-      <p>아직 미정...</p>
-      <p>1. List 작업</p>
-      <p>2. Notice 작업</p>
-      <p>3. Login 작업</p>
+      <p>1. List 작업 -완-</p>
+      <p>2. View/Write 작업진행</p>
+      <p>3. Notice 작업</p>
+      <p>4. Login 작업</p>
     </section>
   );
 }

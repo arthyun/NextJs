@@ -28,10 +28,10 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST 메서드
-export async function POST(request: Request) {
-  const formData = await request.formData();
-  const name = formData.get('name');
-  const email = formData.get('email');
-  return Response.json({ name, email });
-}
+// // POST 메서드
+// export async function POST(request: Request) {
+//   const formData = await request.formData();
+//   const name = formData.get('name');
+//   const email = formData.get('email');
+//   return Response.json({ name, email });
+// }

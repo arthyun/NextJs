@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const ListLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className={classes.list_section}>
-      <h1>글 목록</h1>
+      <h1>목록 및 상세</h1>
       {children}
     </section>
   );

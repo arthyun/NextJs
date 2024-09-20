@@ -8,6 +8,7 @@ import {
   faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 const ListContents = ({
   list,
@@ -16,6 +17,8 @@ const ListContents = ({
   list: ListTypes[];
   classes: any;
 }) => {
+  const router = useRouter();
+
   // 날짜 계산
   const confirmDate = (listTime?: any): any => {
     const time = listTime; // 주어진 날짜
@@ -36,11 +39,17 @@ const ListContents = ({
     }
   };
 
+  // 선택
+  const handleSelectList = (seq: number) => {
+    // console.log(seq);
+    router.push(`/list/${seq}`);
+  };
+
   return (
     <ul>
       {list?.map((item) => {
         return (
-          <li key={item.seq}>
+          <li key={item.seq} onClick={() => handleSelectList(item.seq)}>
             <div className={classes.list_wrap}>
               <div className={classes.top_section}>
                 <span>{item.nick_name}</span>

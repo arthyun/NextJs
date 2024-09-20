@@ -4,12 +4,19 @@
   padding: 2rem 0;
   box-sizing: border-box;
 
+  > h1 {
+    display: none;
+  }
+
   & .list_article {
-    margin: 2rem 0;
+    margin-bottom: 2rem;
     // border: 1px solid var(--black);
 
-    > h3 {
-      display: none;
+    > h2 {
+      //   display: none;
+      font-size: var(--font-26);
+      font-weight: 700;
+      margin-bottom: 2rem;
     }
 
     > ul {

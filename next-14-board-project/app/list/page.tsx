@@ -37,7 +37,7 @@ const List = async ({
 
   return (
     <article className={classes.list_article}>
-      <h3>컨텐츠 항목</h3>
+      <h2>글 목록</h2>
       <ListContents list={list} classes={classes} />
       {/* <Pagination
         //   totalItems={paginationData.total_results}

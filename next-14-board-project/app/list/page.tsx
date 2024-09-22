@@ -15,6 +15,8 @@ const getList = async (search: string) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-store',
+        // next: { revalidate: 60 },
       }
     );
     const result = await res.json();
@@ -33,7 +35,7 @@ const List = async ({
 }) => {
   const search = searchParams['search'] as string;
   const list = await getList(search);
-  // console.log('결과 => ', list);
+  // console.log('결과 => ', list)
 
   return (
     <article className={classes.list_article}>

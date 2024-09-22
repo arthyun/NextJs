@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
       .from('board')
       .select('*')
       .order('seq', { ascending: false }); // 내림차순
+
     return NextResponse.json(board);
   }
 }

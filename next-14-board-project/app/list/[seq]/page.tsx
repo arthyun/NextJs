@@ -1,4 +1,12 @@
+import { Metadata } from 'next';
 import React from 'react';
+import classes from '../(styles)/list.module.scss';
+import DetailItem from './(components)/DetailItem';
+import DetailReply from './(components)/DetailReply';
+
+export const metadata: Metadata = {
+  title: 'Detail | onBoard',
+};
 
 // SSR
 const getListDetail = async (seq: string) => {
@@ -10,6 +18,8 @@ const getListDetail = async (seq: string) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-store',
+        // next: { revalidate: 60 },
       }
     );
     const result = await res.json();
@@ -19,23 +29,15 @@ const getListDetail = async (seq: string) => {
   }
 };
 
-const ListDetail = async ({ params }) => {
+const ListDetail = async ({ params }: { params: { seq: string } }) => {
   const listDetail = await getListDetail(params.seq);
   // console.log(listDetail);
 
   return (
-    <article>
-      <h2 style={{ fontSize: '26px', fontWeight: '700', marginBottom: '2rem' }}>
-        글 상세
-      </h2>
-      <p>{listDetail.seq}</p>
-      <p>{listDetail.nick_name}</p>
-      <p>{listDetail.title}</p>
-      <p>{listDetail.content}</p>
-      <p>{listDetail.like_count}</p>
-      <p>{listDetail.view_count}</p>
-      <p>{listDetail.reply_count}</p>
-      <p>{listDetail.created_at}</p>
+    <article className={classes.detail_article}>
+      <h2>글 상세</h2>
+      <DetailItem data={listDetail.board} classes={classes} />
+      <DetailReply data={listDetail.reply} classes={classes} />
     </article>
   );
 };

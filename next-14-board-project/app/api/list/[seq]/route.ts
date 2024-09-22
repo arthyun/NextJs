@@ -41,10 +41,57 @@ export async function GET(
   let { data: reply } = await supabase
     .from('reply')
     .select('*')
-    .eq('board_seq', seq);
+    .eq('board_seq', seq)
+    .order('seq', { ascending: false }); // 내림차순;
 
   const resultData = Object.assign({}, { board, reply });
   // console.log(resultData);
 
   return NextResponse.json(resultData);
+}
+
+// POST 메서드
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { seq: string } }
+) {
+  const board_seq = params.seq;
+  // Body Parse
+  const { reply } = await req.json();
+
+  // Supabase Connection
+  const supabase = createClient();
+
+  // 댓글 insert
+  const { data, error } = await supabase
+    .from('reply')
+    .insert([
+      {
+        board_seq: board_seq,
+        nick_name: '관리자',
+        content: reply,
+        created_at: new Date(),
+      },
+    ])
+    .select('*');
+
+  // 댓글 insert 후 연계로 board > reply_count 업데이트
+  const { count } = await supabase
+    .from('reply')
+    .select('*', { count: 'exact' })
+    .eq('board_seq', board_seq);
+  await supabase
+    .from('board')
+    .update({
+      reply_count: count,
+    })
+    .eq('seq', board_seq);
+
+  if (error) {
+    return Response.json({ status: 500, message: 'failed' });
+  }
+
+  if (data) {
+    return Response.json({ status: 200, message: 'ok' });
+  }
 }

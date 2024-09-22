@@ -6,9 +6,12 @@ interface UserStoreProps {
   increase: (by: number) => void;
 }
 
-const store = (set, get) => ({
+const store = (
+  set: (arg0: (state: any) => { bears: any }) => any,
+  get: any
+) => ({
   bears: 0,
-  increase: (by) => set((state) => ({ bears: state.bears + by })),
+  increase: (by: any) => set((state) => ({ bears: state.bears + by })),
 });
 
 export const userStore = create<UserStoreProps>()(

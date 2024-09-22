@@ -6,6 +6,7 @@ header {
   @include common_structure;
   position: sticky;
   top: 0;
+  z-index: 110;
   border-bottom: 1px solid var(--gray);
 
   > nav {

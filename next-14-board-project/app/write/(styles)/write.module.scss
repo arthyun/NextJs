@@ -1,0 +1,22 @@
+.write_section {
+  width: 100%;
+  min-height: 80vh;
+  padding: 2rem 0;
+  box-sizing: border-box;
+
+  > h1 {
+    display: none;
+  }
+
+  & .write_article {
+    margin-bottom: 2rem;
+    position: relative;
+
+    > h2 {
+      //   display: none;
+      font-size: var(--font-26);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from 'react';
 import BaseButton from '@/app/components/base/BaseButton';
 import dayjs from 'dayjs';
 import { ReplyTypes } from '../../(types)/ListTypes';
+import { useRouter } from 'next/navigation';
 
 const DetailReply = ({
   data,
@@ -11,6 +12,7 @@ const DetailReply = ({
   data: ReplyTypes[];
   classes: any;
 }) => {
+  const router = useRouter();
   const [reply, setReply] = useState<string>('');
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,10 +20,32 @@ const DetailReply = ({
     setReply(value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const board_seq = data[0].board_seq; // 아무거나 잡아서 seq 할당
     if (reply !== '') {
-      console.log(reply);
+      setReply(''); // 입력창 초기화
+      try {
+        const res = await fetch(
+          process.env.NEXT_PUBLIC_LOCAL_URL + `/api/list/${board_seq}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reply: reply }),
+          }
+        );
+        const result = await res.json();
+        if (result.message === 'ok') {
+          //@ts-ignore
+          alert('success', '댓글이 등록 되었습니다.');
+          return router.refresh();
+        }
+      } catch (error) {
+        console.error(error);
+      }
     } else {
+      //@ts-ignore
       alert('error', '댓글을 입력하지 않았습니다.');
     }
   };
@@ -46,36 +70,12 @@ const DetailReply = ({
     }
   };
 
-  //   // 댓글 더미 데이터
-  //   const replyList = [
-  //     {
-  //       seq: 1,
-  //       board_seq: 7,
-  //       nick_name: '관리자',
-  //       content: '댓글입니다.111111111',
-  //       created_at: '2024-09-22T14:42:44',
-  //     },
-  //     {
-  //       seq: 2,
-  //       board_seq: 7,
-  //       nick_name: '관리자',
-  //       content: '댓글입니다.222222222',
-  //       created_at: '2024-09-21T10:42:44',
-  //     },
-  //     {
-  //       seq: 3,
-  //       board_seq: 7,
-  //       nick_name: '관리자',
-  //       content: '댓글입니다.33333333333',
-  //       created_at: '2024-09-20T07:42:44',
-  //     },
-  //   ];
-
   return (
     <div className={classes.reply_wrap}>
       <h4>{data.length}개의 댓글</h4>
       <div className={classes.reply_input}>
         <input
+          name='reply'
           type='text'
           placeholder='댓글을 입력해주세요 (최대 100자)'
           maxLength={100}

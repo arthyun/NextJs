@@ -71,7 +71,8 @@ const Header = () => {
           <BaseButton
             type={'button'}
             title={'로그인'}
-            onClick={() => alert()}
+            //@ts-ignore
+            onClick={() => alert('info', '로그인 버튼입니다.')}
             disabled={false}
           />
         </article>

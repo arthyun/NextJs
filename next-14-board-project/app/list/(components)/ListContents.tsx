@@ -7,8 +7,9 @@ import {
   faEye,
   faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
-import dayjs from 'dayjs';
+import BaseButton from '@/app/components/base/BaseButton';
 import { useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
 
 const ListContents = ({
   list,
@@ -46,37 +47,45 @@ const ListContents = ({
   };
 
   return (
-    <ul>
-      {list?.map((item) => {
-        return (
-          <li key={item.seq} onClick={() => handleSelectList(item.seq)}>
-            <div className={classes.list_wrap}>
-              <div className={classes.top_section}>
-                <span>{item.nick_name}</span>
-                <span>{confirmDate(item.created_at)}</span>
+    <>
+      <BaseButton
+        type={'button'}
+        title={'새로운 글 작성'}
+        onClick={() => router.push(`/write`)}
+        disabled={false}
+      />
+      <ul>
+        {list?.map((item) => {
+          return (
+            <li key={item.seq} onClick={() => handleSelectList(item.seq)}>
+              <div className={classes.list_wrap}>
+                <div className={classes.top_section}>
+                  <span>{item.nick_name}</span>
+                  <span>{confirmDate(item.created_at)}</span>
+                </div>
+                <div className={classes.center_section}>
+                  <span>{item.title}</span>
+                </div>
+                <div className={classes.bottom_section}>
+                  <span>
+                    <FontAwesomeIcon icon={faEye} /> &nbsp;
+                    {item.view_count}
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faCommentDots} /> &nbsp;
+                    {item.reply_count}
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faThumbsUp} /> &nbsp;
+                    {item.like_count}
+                  </span>
+                </div>
               </div>
-              <div className={classes.center_section}>
-                <span>{item.title}</span>
-              </div>
-              <div className={classes.bottom_section}>
-                <span>
-                  <FontAwesomeIcon icon={faEye} /> &nbsp;
-                  {item.view_count}
-                </span>
-                <span>
-                  <FontAwesomeIcon icon={faCommentDots} /> &nbsp;
-                  {item.reply_count}
-                </span>
-                <span>
-                  <FontAwesomeIcon icon={faThumbsUp} /> &nbsp;
-                  {item.like_count}
-                </span>
-              </div>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 

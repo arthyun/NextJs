@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { ListTypes } from '../../(types)/ListTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,6 +7,7 @@ import {
   faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
+import ViewComponent from '@/app/write/(components)/ViewComponent';
 
 const DetailItem = ({ data, classes }: { data: ListTypes[]; classes: any }) => {
   // 날짜 계산
@@ -38,12 +39,11 @@ const DetailItem = ({ data, classes }: { data: ListTypes[]; classes: any }) => {
               <p>{item.nick_name}</p>
               <p>{confirmDate(item.created_at)}</p>
             </div>
-
             <div className={classes.detail_center}>
               <h3>{item.title}</h3>
-              <p>{item.content}</p>
+              {/* ToastViewer */}
+              <ViewComponent content={item.content} />
             </div>
-
             <div className={classes.detail_bottom}>
               <div>
                 <FontAwesomeIcon icon={faEye} />

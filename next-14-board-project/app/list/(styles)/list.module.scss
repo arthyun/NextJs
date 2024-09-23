@@ -109,16 +109,12 @@
     & .detail_center {
       display: flex;
       flex-direction: column;
-      row-gap: 1rem;
+      row-gap: 0.5rem;
       min-height: 250px;
 
       > h3 {
         font-size: var(--font-30);
         font-weight: 700;
-      }
-      > p {
-        font-size: var(--font-18);
-        font-weight: 400;
       }
     }
     & .detail_bottom {

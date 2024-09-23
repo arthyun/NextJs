@@ -37,7 +37,11 @@ const ListDetail = async ({ params }: { params: { seq: string } }) => {
     <article className={classes.detail_article}>
       <h2>글 상세</h2>
       <DetailItem data={listDetail.board} classes={classes} />
-      <DetailReply data={listDetail.reply} classes={classes} />
+      <DetailReply
+        data={listDetail.reply}
+        board_seq={params.seq}
+        classes={classes}
+      />
     </article>
   );
 };

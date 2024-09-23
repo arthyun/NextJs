@@ -48,6 +48,7 @@ const ListContents = ({
 
   return (
     <>
+      {/* 추후 로그인시 작성 가능하게 만들 것 */}
       <BaseButton
         type={'button'}
         title={'새로운 글 작성'}

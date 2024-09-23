@@ -88,10 +88,10 @@ export async function POST(
     .eq('seq', board_seq);
 
   if (error) {
-    return Response.json({ status: 500, message: 'failed' });
+    return NextResponse.json({ status: 500, message: 'failed' });
   }
 
   if (data) {
-    return Response.json({ status: 200, message: 'ok' });
+    return NextResponse.json({ status: 200, message: 'ok' });
   }
 }

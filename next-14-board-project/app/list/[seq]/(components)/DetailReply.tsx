@@ -7,9 +7,11 @@ import { useRouter } from 'next/navigation';
 
 const DetailReply = ({
   data,
+  board_seq,
   classes,
 }: {
   data: ReplyTypes[];
+  board_seq: string;
   classes: any;
 }) => {
   const router = useRouter();
@@ -21,7 +23,6 @@ const DetailReply = ({
   };
 
   const handleSubmit = async () => {
-    const board_seq = data[0].board_seq; // 아무거나 잡아서 seq 할당
     if (reply !== '') {
       setReply(''); // 입력창 초기화
       try {

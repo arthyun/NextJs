@@ -18,5 +18,62 @@
       font-weight: 700;
       margin-bottom: 3rem;
     }
+
+    & .write_form {
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 2rem;
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 0 4rem;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      > label {
+        gap: unset;
+        justify-content: space-between;
+        padding-left: 1.25rem;
+        border: 1px solid var(--gray);
+        border-radius: 25px;
+        font-weight: 700;
+        background: #ccc;
+        box-sizing: border-box;
+        // overflow: hidden;
+
+        > input {
+          width: calc(100% - 70px);
+          background: var(--white);
+          border-radius: 25px;
+          padding-left: 1.25rem;
+          font-size: var(--font-16);
+          &:focus {
+            outline: 2px solid #0081cc;
+          }
+        }
+      }
+
+      & .write_button_group {
+        display: flex;
+        column-gap: 1rem;
+        > button {
+          width: 50%;
+          height: 40px;
+          font-size: var(--font-16);
+          &:hover {
+            font-weight: 700;
+          }
+        }
+        > button:nth-last-child(1) {
+          background: var(--gray);
+          color: var(--black);
+          &:hover {
+            background: var(--black);
+            color: var(--white);
+          }
+        }
+      }
+    }
   }
 }

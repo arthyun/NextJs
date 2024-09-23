@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/app/utils/supabase/server';
-// import { redirect } from 'next/navigation'
 
 // GET 메서드
 export async function GET(req: NextRequest) {
@@ -29,10 +28,33 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// // POST 메서드
-// export async function POST(request: Request) {
-//   const formData = await request.formData();
-//   const name = formData.get('name');
-//   const email = formData.get('email');
-//   return Response.json({ name, email });
-// }
+// POST 메서드
+export async function POST(req: NextRequest) {
+  const formData = await req.formData();
+  const { nick_name, title, content } = Object.fromEntries(formData);
+
+  // Supabase Connection
+  const supabase = createClient();
+
+  // 새글 insert (안보낸 항목은 디폴트값 있어서임)
+  const { data, error } = await supabase
+    .from('board')
+    .insert([
+      {
+        nick_name: nick_name,
+        title: title,
+        content: content,
+        created_at: new Date(),
+      },
+    ])
+    .select('*');
+
+  if (error) {
+    console.error(error);
+    return NextResponse.json({ message: 'failed', status: 500 });
+  }
+
+  if (data) {
+    return NextResponse.json({ message: 'ok', status: 200 });
+  }
+}

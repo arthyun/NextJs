@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '@/app/assets/styles/common.scss';
 import Header from '@/app/components/common/Header';
 import Footer from '@/app/components/common/Footer';
+import ModalBox from '@/app/components/common/ModalBox';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -41,6 +42,9 @@ export default function RootLayout({
           pauseOnHover
           theme='dark'
         />
+
+        {/* 공통 모달 */}
+        <div id='modal-root'></div>
       </body>
     </html>
   );

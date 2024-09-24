@@ -1,11 +1,23 @@
+import { ReactNode } from 'react';
+import { modalStore } from '../contexts/modalStore';
+
 export default function useModal() {
-  const open = () => {
-    console.log('open modal');
+  // Zustand
+  const setIsOpen = modalStore((state) => state.setIsOpen);
+  const setModalComponent = modalStore((state) => state.setModalComponent);
+  const setModalData = modalStore((state) => state.setModalData);
+
+  const modalOpen = (component: ReactNode, data: any) => {
+    setIsOpen(true);
+    setModalComponent(component);
+    setModalData(data);
   };
 
-  const close = () => {
-    console.log('close modal');
+  const modalClose = () => {
+    setIsOpen(false);
+    setModalComponent(null);
+    setModalData({});
   };
 
-  return { open, close };
+  return { modalOpen, modalClose };
 }

@@ -5,28 +5,33 @@ import BaseButton from '@/app/components/base/BaseButton';
 import useAlert from '@/app/hooks/useAlert';
 import { useRouter } from 'next/navigation';
 import { modalStore } from '@/app/contexts/modalStore';
-import ModalBox from '@/app/components/common/ModalBox';
+import { useSession } from 'next-auth/react';
 import Login from '@/app/components/common/Login';
+import ModalBox from '@/app/components/common/ModalBox';
+import useModal from '@/app/hooks/useModal';
 
 const Header = () => {
   // 전역 alert
   if (typeof window !== 'undefined') window.alert = useAlert();
 
-  // Zustand
-  const isOpen = modalStore((state) => state.isOpen);
-  const setIsOpen = modalStore((state) => state.setIsOpen);
-  const setModalComponent = modalStore((state) => state.setModalComponent);
-  const setModalData = modalStore((state) => state.setModalData);
-  // console.log(isOpen);
-
-  const [search, setSearch] = useState<string>('');
-
+  // Router
   const router = useRouter();
 
+  // User Status
+  const { data: session } = useSession();
+  console.log(session);
+
+  // Zustand
+  const isOpen = modalStore((state) => state.isOpen);
+
+  // States
+  const [search, setSearch] = useState<string>('');
+
+  // Modal Func
+  const { modalOpen } = useModal();
+
   const handleOpenLoginModal = () => {
-    setModalComponent(<Login />);
-    setModalData({ name: 'Login Component' });
-    setIsOpen(!isOpen);
+    modalOpen(<Login />, { name: 'Hello Modal~' });
   };
 
   return (

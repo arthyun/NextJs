@@ -7,10 +7,10 @@ export default function Home() {
         <p>2. View/Reply 작업 [완]</p>
         <p>3. Write 작업 [완]</p>
         <p>
-          4. Editor 도입 [완], 공통 모달, 스켈레톤ui, 파일 업로드 기능 추가
+          4. Editor 도입 [완], 공통 모달 [완], 스켈레톤ui, 파일 업로드 기능 추가
           [진행중]
         </p>
-        <p>5. Login 작업</p>
+        <p>5. Login 작업 [next-auth 초안 작업 완료]</p>
         <p>6. Notice 작업</p>
       </section>
     </>

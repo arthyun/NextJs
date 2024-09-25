@@ -20,7 +20,7 @@ const Header = () => {
 
   // User Status
   const { data: session } = useSession();
-  console.log(session);
+  // console.log(session);
 
   // Zustand
   const isOpen = modalStore((state) => state.isOpen);

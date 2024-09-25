@@ -26,7 +26,7 @@ const Login = () => {
           id={'email'}
           name={'이메일'}
           type={'text'}
-          placeholder={'아이디를 입력하세요'}
+          placeholder={'이메일 주소를 입력하세요'}
           value={loginForm.email}
           onChange={handleLoginChange}
           required={false}
@@ -34,7 +34,7 @@ const Login = () => {
         />
         <BaseInput
           id={'password'}
-          name={'패스워드'}
+          name={'비밀번호'}
           type={'password'}
           placeholder={'비밀번호를 입력하세요'}
           value={loginForm.password}
@@ -45,7 +45,19 @@ const Login = () => {
         <BaseButton
           type='button'
           title='일반 로그인'
-          onClick={() => signIn()}
+          onClick={() => {
+            if (loginForm.email !== '' && loginForm.password !== '') {
+              signIn('credentials', {
+                email: loginForm.email,
+                password: loginForm.password,
+                redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+                callbackUrl: '/', // true 일경우 동작 에러일때 에러페이지 동작
+              });
+            } else {
+              // @ts-ignore
+              alert('error', '이메일, 패스워드를 확인해주세요');
+            }
+          }}
           disabled={false}
         />
         <BaseButton

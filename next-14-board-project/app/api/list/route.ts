@@ -3,9 +3,9 @@ import { createClient } from '@/app/utils/supabase/server';
 
 // GET 메서드
 export async function GET(req: NextRequest) {
-  // jwt 확인
-  const authHeader = req.headers.get('authrization');
-  console.log(authHeader);
+  // // 헤더 토큰 확인 (테스트)
+  // const authHeader = req.headers.get('authrization');
+  // console.log(authHeader);
 
   // Supabase Connection
   const supabase = createClient();

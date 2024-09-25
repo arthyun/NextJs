@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/app/utils/supabase/auth_server';
-import JWT from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 // POST 메서드
 export async function POST(req: NextRequest) {
@@ -17,13 +17,19 @@ export async function POST(req: NextRequest) {
     .select('*')
     .eq('email', email);
 
-  // JWT Logic
-  const secret = process.env.JWT_SECRET as string;
-  const makeAccessToken = JWT.sign({ email, password }, secret);
-  //   console.log('jwt.sign ==> ', token);
-
   if (data!.length > 0) {
-    // console.log(data![0]);
+    // 조회 결과
+    const { name, email } = data![0];
+
+    // Token 생성 (조회 결과를 기준으로 가공)
+    const secret = process.env.JWT_SECRET as string;
+    const makeAccessToken = jwt.sign({ name, email }, secret, {
+      expiresIn: '1m',
+    });
+    // const verified: any = jwt.verify(makeAccessToken, secret);
+    // console.log('jwt.sign ==> ', makeAccessToken);
+    // console.log('jwt.verified ==> ', verified);
+
     // 최종 return 및 (여기서 쿠키 설정시 적용안됌)
     return NextResponse.json({
       status: 200,

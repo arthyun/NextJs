@@ -5,10 +5,11 @@ import BaseButton from '@/app/components/base/BaseButton';
 import useAlert from '@/app/hooks/useAlert';
 import { useRouter } from 'next/navigation';
 import { modalStore } from '@/app/contexts/modalStore';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Login from '@/app/components/common/Login';
 import ModalBox from '@/app/components/common/ModalBox';
 import useModal from '@/app/hooks/useModal';
+import Image from 'next/image';
 
 const Header = () => {
   // 전역 alert
@@ -85,12 +86,30 @@ const Header = () => {
 
           <article className='right_article'>
             <h3>로그인 부분</h3>
-            <BaseButton
-              type={'button'}
-              title={'로그인'}
-              onClick={handleOpenLoginModal}
-              disabled={false}
-            />
+            {!session ? (
+              <BaseButton
+                type={'button'}
+                title={'로그인'}
+                onClick={handleOpenLoginModal}
+                disabled={false}
+              />
+            ) : (
+              <div className='login_group'>
+                <Image
+                  aria-hidden
+                  src={session.user.image as string}
+                  alt='User_Profile'
+                  width={35}
+                  height={35}
+                />
+                <BaseButton
+                  type={'button'}
+                  title={'로그아웃'}
+                  onClick={() => signOut()}
+                  disabled={false}
+                />
+              </div>
+            )}
           </article>
         </nav>
       </header>

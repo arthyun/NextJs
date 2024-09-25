@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/supabase-adapter": "^1.5.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
@@ -19,6 +20,7 @@
     "@supabase/supabase-js": "^2.45.4",
     "@toast-ui/react-editor": "^3.2.3",
     "dayjs": "^1.11.13",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.11",
     "next-auth": "^4.24.7",
     "react": "^18",
@@ -29,6 +31,7 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

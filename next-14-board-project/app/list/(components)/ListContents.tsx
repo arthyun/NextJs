@@ -10,6 +10,7 @@ import {
 import BaseButton from '@/app/components/base/BaseButton';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
+import { useSession } from 'next-auth/react';
 
 const ListContents = ({
   list,
@@ -19,6 +20,7 @@ const ListContents = ({
   classes: any;
 }) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   // 날짜 계산
   const confirmDate = (listTime?: any): any => {
@@ -48,13 +50,15 @@ const ListContents = ({
 
   return (
     <>
-      {/* 추후 로그인시 작성 가능하게 만들 것 */}
-      <BaseButton
-        type={'button'}
-        title={'새로운 글 작성'}
-        onClick={() => router.push(`/write`)}
-        disabled={false}
-      />
+      {session ? (
+        <BaseButton
+          type={'button'}
+          title={'새로운 글 작성'}
+          onClick={() => router.push(`/write`)}
+          disabled={false}
+        />
+      ) : null}
+
       <ul>
         {list?.map((item) => {
           return (

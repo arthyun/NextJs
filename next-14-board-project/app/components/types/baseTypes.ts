@@ -6,14 +6,15 @@ export interface BaseInputTypes {
   type: string;
   placeholder: string;
   value: string | number;
-  onChange: Dispatch<SetStateAction<any>>;
+  onChange?: Dispatch<SetStateAction<any>>;
   required: boolean;
   disabled: boolean;
+  readonly?: boolean;
 }
 
 export interface BaseButtonTypes {
   type: 'submit' | 'reset' | 'button' | undefined;
   title: string;
-  onClick: (by: any) => void;
+  onClick?: (by: any) => void;
   disabled: boolean;
 }

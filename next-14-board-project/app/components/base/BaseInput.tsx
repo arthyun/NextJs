@@ -12,6 +12,7 @@ const BaseInput: FC<BaseInputTypes> = ({
   onChange,
   required,
   disabled,
+  readonly,
 }) => {
   return (
     <label className={classes.base_input}>
@@ -25,6 +26,7 @@ const BaseInput: FC<BaseInputTypes> = ({
         onChange={onChange}
         required={required}
         disabled={disabled}
+        readOnly={readonly}
       />
     </label>
   );

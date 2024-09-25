@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import classes from '@/app/components/styles/login.module.scss';
-import BaseInput from '@/app/components/base/BaseInput.tsx';
-import BaseButton from '@/app/components/base/BaseButton.tsx';
+import BaseInput from '@/app/components/base/BaseInput';
+import BaseButton from '@/app/components/base/BaseButton';
 
 const Login = () => {
   const [loginForm, setLoginForm] = useState({
-    id: '',
+    email: '',
     password: '',
   });
 
@@ -23,11 +23,11 @@ const Login = () => {
       <h2>로그인</h2>
       <form>
         <BaseInput
-          id={'id'}
-          name={'아이디'}
+          id={'email'}
+          name={'이메일'}
           type={'text'}
           placeholder={'아이디를 입력하세요'}
-          value={loginForm.id}
+          value={loginForm.email}
           onChange={handleLoginChange}
           required={false}
           disabled={false}
@@ -51,7 +51,7 @@ const Login = () => {
         <BaseButton
           type='button'
           title='구글 로그인'
-          onClick={() => signIn()}
+          onClick={() => signIn('google')}
           disabled={false}
         />
       </form>

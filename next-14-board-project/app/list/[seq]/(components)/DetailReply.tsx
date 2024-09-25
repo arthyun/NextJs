@@ -1,9 +1,10 @@
 'use client';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import BaseButton from '@/app/components/base/BaseButton';
 import dayjs from 'dayjs';
 import { ReplyTypes } from '../../(types)/ListTypes';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const DetailReply = ({
   data,
@@ -15,16 +16,24 @@ const DetailReply = ({
   classes: any;
 }) => {
   const router = useRouter();
-  const [reply, setReply] = useState<string>('');
+
+  const { data: session } = useSession();
+
+  const [reply, setReply] = useState({
+    nick_name: '',
+    content: '',
+  });
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setReply(value);
+    setReply({
+      ...reply,
+      content: value,
+    });
   };
 
   const handleSubmit = async () => {
-    if (reply !== '') {
-      setReply(''); // 입력창 초기화
+    if (reply.content !== '') {
       try {
         const res = await fetch(
           process.env.NEXT_PUBLIC_LOCAL_URL + `/api/list/${board_seq}`,
@@ -33,13 +42,18 @@ const DetailReply = ({
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ reply: reply }),
+            body: JSON.stringify(reply),
           }
         );
         const result = await res.json();
         if (result.message === 'ok') {
           //@ts-ignore
           alert('success', '댓글이 등록 되었습니다.');
+          // 입력창 초기화
+          setReply({
+            ...reply,
+            content: '',
+          });
           return router.refresh();
         }
       } catch (error) {
@@ -71,6 +85,15 @@ const DetailReply = ({
     }
   };
 
+  useEffect(() => {
+    if (session) {
+      setReply({
+        ...reply,
+        nick_name: session.user.name as string,
+      });
+    }
+  }, [session]);
+
   return (
     <div className={classes.reply_wrap}>
       <h4>{data.length}개의 댓글</h4>
@@ -78,16 +101,21 @@ const DetailReply = ({
         <input
           name='reply'
           type='text'
-          placeholder='댓글을 입력해주세요 (최대 100자)'
+          placeholder={
+            session
+              ? '댓글을 입력해주세요. (최대 100자)'
+              : '로그인이 필요합니다.'
+          }
           maxLength={100}
-          value={reply}
+          value={reply.content}
           onChange={handleOnChange}
+          disabled={session ? false : true}
         />
         <BaseButton
           type={'button'}
           title={'댓글쓰기'}
           onClick={handleSubmit}
-          disabled={false}
+          disabled={session ? false : true}
         />
       </div>
       <div className={classes.reply_list}>

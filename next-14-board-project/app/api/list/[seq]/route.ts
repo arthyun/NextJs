@@ -57,7 +57,7 @@ export async function POST(
 ) {
   const board_seq = params.seq;
   // Body Parse
-  const { reply } = await req.json();
+  const { nick_name, content } = await req.json();
 
   // Supabase Connection
   const supabase = createClient();
@@ -68,8 +68,8 @@ export async function POST(
     .insert([
       {
         board_seq: board_seq,
-        nick_name: '관리자',
-        content: reply,
+        nick_name: nick_name,
+        content: content,
         created_at: new Date(),
       },
     ])

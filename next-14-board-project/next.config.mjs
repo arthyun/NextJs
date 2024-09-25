@@ -10,6 +10,9 @@ const nextConfig = {
     reactStrictMode: true,
     includePaths: [path.join(__dirname, 'styles')],
   },
+  images: {
+    domains: ['lh3.googleusercontent.com', 'localhost'],
+  },
 };
 
 export default nextConfig;

@@ -78,6 +78,15 @@ header {
       > h3 {
         display: none;
       }
+
+      & .login_group {
+        display: flex;
+        column-gap: 0.5rem;
+        > img {
+          display: block;
+          border-radius: 50%;
+        }
+      }
     }
   }
 }

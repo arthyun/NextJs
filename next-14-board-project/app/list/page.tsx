@@ -1,10 +1,12 @@
 import React from 'react';
 import classes from './(styles)/list.module.scss';
 import ListContents from './(components)/ListContents';
+import { cookies } from 'next/headers';
 // import Pagination from '@/app/components/common/Pagination';
 
 // SSR
 const getList = async (search: string) => {
+  const accessToken = cookies().get('accessToken')?.value;
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_LOCAL_URL +
@@ -14,6 +16,7 @@ const getList = async (search: string) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authrization: `Bearer ${accessToken}`,
         },
         cache: 'no-store',
         // next: { revalidate: 60 },

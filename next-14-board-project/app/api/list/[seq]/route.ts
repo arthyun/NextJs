@@ -20,16 +20,21 @@ export async function GET(
 
   // 접속마다 뷰 카운트 올리기
   // 기존 카운트 조회 후 업데이트 침
+  // view_count 값을 먼저 조회하고, 그 값을 이용해 바로 업데이트
   let { data: count } = await supabase
     .from('board')
-    .select('view_count')
-    .eq('seq', seq);
-  await supabase
-    .from('board')
-    .update({
-      view_count: count![0].view_count + 1,
-    })
-    .eq('seq', seq);
+    .select('view_count', { count: 'exact' })
+    .eq('seq', seq)
+    .single();
+
+  if (count) {
+    await supabase
+      .from('board')
+      .update({
+        view_count: count.view_count + 1,
+      })
+      .eq('seq', seq);
+  }
 
   // 상세 데이터
   let { data: board, error } = await supabase

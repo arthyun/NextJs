@@ -5,7 +5,7 @@ import ListContents from './(components)/ListContents';
 // import Pagination from '@/app/components/common/Pagination';
 
 // SSR
-const getList = async (search: string) => {
+export const getList = async (search: string) => {
   // // 테스트로 토큰을 보내보자
   // const accessToken = cookies().get('accessToken')?.value;
 
@@ -21,7 +21,7 @@ const getList = async (search: string) => {
           // Authrization: `Bearer ${accessToken}`,
         },
         cache: 'no-store',
-        // next: { revalidate: 60 },
+        // next: { revalidate: 1500 },
       }
     );
     const result = await res.json();
@@ -40,7 +40,7 @@ const List = async ({
 }) => {
   const search = searchParams['search'] as string;
   const list = await getList(search);
-  // console.log('결과 => ', list)
+  // console.log('결과 => ', list);
 
   return (
     <article className={classes.list_article}>

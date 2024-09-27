@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
 import { ListTypes } from '../(types)/ListTypes';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import BaseButton from '@/app/components/base/BaseButton';
+import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,
   faEye,
   faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
-import BaseButton from '@/app/components/base/BaseButton';
-import { useRouter } from 'next/navigation';
-import dayjs from 'dayjs';
-import { useSession } from 'next-auth/react';
 
 const ListContents = ({
   list,
@@ -46,6 +46,7 @@ const ListContents = ({
   const handleSelectList = (seq: number) => {
     // console.log(seq);
     router.push(`/list/${seq}`);
+    router.refresh(); // 상세 클릭시 조회수 상승 즉시반영 되게.. (임시)
   };
 
   return (

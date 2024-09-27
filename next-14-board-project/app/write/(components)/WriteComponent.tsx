@@ -110,7 +110,8 @@ const WriteComponent = ({ classes }: { classes: any }) => {
           // @ts-ignore
           alert('success', '게시글이 등록되었습니다.');
           handleReset(); // 인풋 초기화
-          return router.replace('/list'); // 리다이렉트
+          router.replace('/list'); // 리다이렉트
+          return router.refresh();
         }
       } catch (error: any) {
         throw new Error(error);

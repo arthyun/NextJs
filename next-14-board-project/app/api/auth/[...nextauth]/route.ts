@@ -1,9 +1,8 @@
-import NextAuth, { Session } from 'next-auth';
+import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
 import { Adapter } from 'next-auth/adapters';
-// import { cookies } from 'next/headers';
 
 // 구글 리프레시 토큰 관련
 const GOOGLE_AUTHORIZATION_URL =
@@ -23,7 +22,7 @@ const refreshAccessToken = async (token: any) => {
         client_id: process.env.GOOGLE_CLIENT_ID ?? '',
         client_secret: process.env.GOOGLE_CLIENT_SECRET ?? '',
         grant_type: 'refresh_token',
-        refresh_token: token.refreshToken ?? '',
+        refresh_token: token.refreshToken as string,
       });
     const res = await fetch(token.provider === 'google' ? google_url : '', {
       headers: {
@@ -98,30 +97,14 @@ const handler = NextAuth({
       },
     }),
   ],
-  debug: true, // 디버깅
-  session: {
-    strategy: 'jwt',
-    maxAge: 60 * 1, // 1분...
-  },
-  jwt: {
-    maxAge: 60 * 1, // 1분...
-  },
   callbacks: {
     async jwt({ token, user, account, trigger, session }) {
-      // // authrize의 결과값이 user로 넘어온다.
-      // if (user) {
-      //   token.user = user;
-      // }
-      // console.log(account);
-      // return token;
-
       // 구글 관련
       if (account && user) {
         return {
           provider: account.provider, // 구분자
           accessToken: account.accessToken,
-          // @ts-ignore
-          accessTokenExpires: Date.now() + account.expires_in * 1000,
+          accessTokenExpires: (account.expires_at as number) * 1000,
           refreshToken: account.refresh_token,
           user,
         };
@@ -133,25 +116,6 @@ const handler = NextAuth({
       return refreshAccessToken(token);
     },
     async session({ token, session }: { token: any; session: any }) {
-      // // jwt의 결과값인 token이 들어온다.
-      // if (token) {
-      //   session.user = token.user;
-      //   session.expires = token.exp; // jwt 만료시간
-      // }
-      // return session;
-
-      // // 쿠키 설정
-      // cookies().set({
-      //   name: 'accessToken',
-      //   // @ts-ignore
-      //   value: session.user.token.accessToken,
-      //   httpOnly: true,
-      //   secure: true,
-      //   sameSite: true,
-      //   // maxAge: 60 * 1,
-      //   maxAge: session.user.token.exp,
-      // });
-
       // 구글 관련
       if (token) {
         session.user = token.user;
@@ -161,6 +125,15 @@ const handler = NextAuth({
       return session;
     },
   },
+  // 토큰 주기
+  // jwt: {
+  //   maxAge: 60 * 1, // 1분...
+  // },
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 2, // 2분...
+  },
+  debug: true, // 디버깅
 });
 
 export { handler as GET, handler as POST };

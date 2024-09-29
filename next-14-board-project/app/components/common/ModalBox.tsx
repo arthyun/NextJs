@@ -1,7 +1,6 @@
 'use client';
 import { createPortal } from 'react-dom';
 import { modalStore } from '@/app/contexts/modalStore';
-import { MouseEvent } from 'react';
 import classes from '@/app/components/styles/modal.module.scss';
 import useModal from '@/app/hooks/useModal';
 

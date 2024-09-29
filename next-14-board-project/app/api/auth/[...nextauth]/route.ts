@@ -104,7 +104,9 @@ const handler = NextAuth({
         return {
           provider: account.provider, // 구분자
           accessToken: account.accessToken,
-          accessTokenExpires: (account.expires_at as number) * 1000,
+          accessTokenExpires:
+            (account.expires_at && (account.expires_at as number) * 1000) ??
+            new Date().getTime() + 60000,
           refreshToken: account.refresh_token,
           user,
         };

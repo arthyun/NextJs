@@ -59,4 +59,14 @@
       }
     }
   }
+
+  & .login_join {
+    text-align: center;
+    text-decoration: underline;
+    font-size: var(--font-12);
+    cursor: pointer;
+    &:hover {
+      color: #0081cc;
+    }
+  }
 }

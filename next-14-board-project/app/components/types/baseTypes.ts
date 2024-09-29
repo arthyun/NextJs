@@ -4,8 +4,8 @@ export interface BaseInputTypes {
   id: string;
   name: string;
   type: string;
-  placeholder: string;
-  value: string | number;
+  placeholder?: string;
+  value?: string | number;
   onChange?: Dispatch<SetStateAction<any>>;
   required: boolean;
   disabled: boolean;

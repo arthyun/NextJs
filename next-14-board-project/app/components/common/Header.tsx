@@ -49,7 +49,9 @@ const Header = () => {
               <Link href={'/list'}>글 목록</Link>
             </li>
             <li className='header_menu'>
-              <Link href={'/notice'}>공지사항</Link>
+              <Link href={'/notice'} onClick={(e) => e.preventDefault()}>
+                공지사항
+              </Link>
             </li>
           </ul>
 
@@ -80,6 +82,7 @@ const Header = () => {
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   router.push(`/list?search=${search}`);
+                  return setSearch(''); // 입력값 초기화
                 }
               }}
             />

@@ -5,7 +5,7 @@ import ListContents from './(components)/ListContents';
 // import Pagination from '@/app/components/common/Pagination';
 
 // SSR
-export const getList = async (search: string) => {
+const getList = async (search: string) => {
   // // 테스트로 토큰을 보내보자
   // const accessToken = cookies().get('accessToken')?.value;
 

@@ -21,7 +21,7 @@ export async function GET(
   // 접속마다 뷰 카운트 올리기
   // 기존 카운트 조회 후 업데이트 침
   // view_count 값을 먼저 조회하고, 그 값을 이용해 바로 업데이트
-  let { data: count } = await supabase
+  const { data: count } = await supabase
     .from('board')
     .select('view_count', { count: 'exact' })
     .eq('seq', seq)
@@ -37,13 +37,13 @@ export async function GET(
   }
 
   // 상세 데이터
-  let { data: board, error } = await supabase
+  const { data: board, error } = await supabase
     .from('board')
     .select('*')
     .eq('seq', seq);
 
   // 상세에 따른 댓글 데이터
-  let { data: reply } = await supabase
+  const { data: reply } = await supabase
     .from('reply')
     .select('*')
     .eq('board_seq', seq)

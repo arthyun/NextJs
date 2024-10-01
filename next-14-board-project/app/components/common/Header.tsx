@@ -13,6 +13,7 @@ import Image from 'next/image';
 
 const Header = () => {
   // 전역 alert
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   if (typeof window !== 'undefined') window.alert = useAlert();
 
   // Router
@@ -97,7 +98,7 @@ const Header = () => {
               <div className='login_group'>
                 <Image
                   aria-hidden
-                  src={session.user.image as string}
+                  src={session?.user?.image as string}
                   alt='User_Profile'
                   width={35}
                   height={35}

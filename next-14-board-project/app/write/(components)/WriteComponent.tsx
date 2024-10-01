@@ -56,7 +56,7 @@ const WriteComponent = ({ classes }: { classes: any }) => {
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let validateArr: string[] = [];
+    const validateArr: string[] = [];
     Object.keys(formData).forEach((item: string) => {
       // content는 아래 editor 부분에서 별도 처리
       if (formData[item] === '' && item !== 'content') {
@@ -84,7 +84,7 @@ const WriteComponent = ({ classes }: { classes: any }) => {
     if (validateArr.length > 0) {
       alert(
         'error',
-        //@ts-ignore
+        // @ts-ignore : no problem
         `${validateArr.toString().split(',').join(', ')}이 입력되지 않았습니다.`
       );
     } else {
@@ -107,7 +107,7 @@ const WriteComponent = ({ classes }: { classes: any }) => {
         );
         const result = await res.json();
         if (result.message === 'ok') {
-          // @ts-ignore
+          // @ts-ignore : no problem
           alert('success', '게시글이 등록되었습니다.');
           handleReset(); // 인풋 초기화
           router.replace('/list'); // 리다이렉트

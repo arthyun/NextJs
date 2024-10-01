@@ -61,7 +61,7 @@ const Login = () => {
           callbackUrl: '/', // true 일경우 동작 에러일때 에러페이지 동작
         }).then((res) => {
           if (!res!.ok) {
-            // @ts-ignore
+            // @ts-ignore : no problem
             alert('error', `ERROR CODE : ${res?.status}`);
           } else {
             setIsOpen(false);
@@ -69,7 +69,7 @@ const Login = () => {
           }
         });
       } else {
-        // @ts-ignore
+        // @ts-ignore : no problem
         return alert('error', '이메일, 패스워드를 확인해주세요');
       }
     }
@@ -109,14 +109,14 @@ const Login = () => {
     // 유효성 검사
     const validate = Object.fromEntries(newFormData);
 
-    let valiArr = [];
+    const valiArr = [];
     for (const key in validate) {
       if (validate[key] === '') {
         valiArr.push(key);
       }
     }
     if (valiArr.length > 0) {
-      // @ts-ignore
+      // @ts-ignore : no problem
       return alert('error', `${valiArr.toString()}(을/를) 입력하세요.`);
     } else {
       // content type 지정시 서버에서 인식 못함
@@ -133,7 +133,7 @@ const Login = () => {
         );
         const result = await res.json();
         if (result.status === 200) {
-          // @ts-ignore
+          // @ts-ignore : no problem
           alert('success', '회원가입에 성공하였습니다.');
           handleReset('all'); // 초기화
           return router.refresh();

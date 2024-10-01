@@ -69,7 +69,7 @@ const handler = NextAuth({
         email: { type: 'email' },
         password: { type: 'password' },
       },
-      // @ts-ignore
+      // @ts-ignore : no problem
       async authorize(credentials, req) {
         const { email, password } = credentials as Record<
           'email' | 'password',
@@ -111,7 +111,7 @@ const handler = NextAuth({
           user,
         };
       }
-      // @ts-ignore
+      // @ts-ignore : no problem
       if (Date.now() < token.accessTokenExpires) {
         return token;
       }

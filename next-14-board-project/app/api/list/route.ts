@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   if (req.nextUrl.search !== '') {
     const searchParams = req.nextUrl.searchParams;
     if (searchParams.get('search') !== null) {
-      let { data: board, error } = await supabase
+      const { data: board, error } = await supabase
         .from('board')
         .select('*')
         .like('title', `%${searchParams.get('search')}%`)
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     }
   } else {
     // 검색한게 아니면 전체 호출
-    let { data: board, error } = await supabase
+    const { data: board, error } = await supabase
       .from('board')
       .select('*')
       .order('seq', { ascending: false }); // 내림차순

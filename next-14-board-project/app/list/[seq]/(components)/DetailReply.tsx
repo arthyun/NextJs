@@ -47,7 +47,7 @@ const DetailReply = ({
         );
         const result = await res.json();
         if (result.message === 'ok') {
-          //@ts-ignore
+          // @ts-ignore : no problem
           alert('success', '댓글이 등록 되었습니다.');
           // 입력창 초기화
           setReply({
@@ -60,7 +60,7 @@ const DetailReply = ({
         console.error(error);
       }
     } else {
-      //@ts-ignore
+      // @ts-ignore : no problem
       alert('error', '댓글을 입력하지 않았습니다.');
     }
   };

@@ -101,7 +101,11 @@ const Header = () => {
               <div className='login_group'>
                 <Image
                   aria-hidden
-                  src={session?.user?.image as string}
+                  src={
+                    (session?.user?.image as string).startsWith('http')
+                      ? (session?.user?.image as string)
+                      : (('/uploads/' + session?.user?.image) as string)
+                  }
                   alt='User_Profile'
                   width={35}
                   height={35}

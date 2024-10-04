@@ -16,5 +16,6 @@ export interface BaseButtonTypes {
   type: 'submit' | 'reset' | 'button' | undefined;
   title: string;
   onClick?: (by: any) => void;
+  onKeyUp?: () => void;
   disabled: boolean;
 }

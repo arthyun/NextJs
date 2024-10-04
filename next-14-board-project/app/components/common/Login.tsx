@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -37,10 +37,21 @@ const Login = () => {
   const handleJoinChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value, files } = e.target;
     if (id === 'file') {
+      const file = files![0];
       setJoinForm({
         ...joinForm,
-        [id]: files![0],
+        [id]: file,
       });
+      // // FileReader 객체 생성
+      // const reader = new FileReader();
+      // // 파일을 읽는 작업이 완료되면 실행될 콜백 함수
+      // reader.onload = function () {
+      //   // Base64 인코딩된 결과를 출력
+      //   const base64String = reader.result;
+      //   console.log(base64String); // 'data:image/jpeg;base64,...' 같은 문자열 출력
+      // };
+      // // 파일을 Base64로 읽기
+      // reader.readAsDataURL(file);
     } else {
       setJoinForm({
         ...joinForm,
@@ -101,10 +112,7 @@ const Login = () => {
     newFormData.append('nick_name', joinForm.nick_name);
     newFormData.append('email', joinForm.email);
     newFormData.append('password', joinForm.password);
-    newFormData.append(
-      'file',
-      joinForm.file ? URL.createObjectURL(joinForm.file) : ''
-    ); // 파일 경로 생성하여 저장
+    newFormData.append('file', joinForm.file); // 파일은 서버에서 별도처리
 
     // 유효성 검사
     const validate = Object.fromEntries(newFormData);
@@ -144,6 +152,19 @@ const Login = () => {
     }
   };
 
+  // Enter 적용된 로그인
+  const handleSubmit = (e: FormEvent<HTMLFormElement>, type: string) => {
+    e.preventDefault();
+    switch (type) {
+      case 'login':
+        return handleCommonLogin('credentials');
+      case 'join':
+        return handleJoin();
+      default:
+        return;
+    }
+  };
+
   return (
     <>
       {!isJoinForm && (
@@ -154,7 +175,7 @@ const Login = () => {
           className={classes.login_article}
         >
           <h2>로그인</h2>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e, 'login')}>
             <BaseInput
               id={'email'}
               name={'이메일'}
@@ -175,12 +196,7 @@ const Login = () => {
               required={false}
               disabled={false}
             />
-            <BaseButton
-              type='button'
-              title='일반 로그인'
-              onClick={() => handleCommonLogin('credentials')}
-              disabled={false}
-            />
+            <BaseButton type='submit' title='일반 로그인' disabled={false} />
             <BaseButton
               type='button'
               title='구글 로그인'
@@ -201,7 +217,7 @@ const Login = () => {
           className={classes.login_article}
         >
           <h2>회원가입</h2>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e, 'join')}>
             <BaseInput
               id={'nick_name'}
               name={'닉네임'}
@@ -242,12 +258,7 @@ const Login = () => {
               required={false}
               disabled={false}
             />
-            <BaseButton
-              type='button'
-              title='회원가입'
-              onClick={handleJoin}
-              disabled={false}
-            />
+            <BaseButton type='submit' title='회원가입' disabled={false} />
             <BaseButton
               type='button'
               title='다시 작성'

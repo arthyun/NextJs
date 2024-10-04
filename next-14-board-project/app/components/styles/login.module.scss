@@ -32,10 +32,26 @@
         padding: 10px 0;
         font-size: var(--font-12);
         border-bottom: 1px solid var(--black);
+        &::placeholder {
+          color: #0081cc;
+        }
         &:focus {
           border-bottom: 1px solid #0081cc;
           &::placeholder {
             color: #0081cc;
+          }
+        }
+      }
+      .fail_validaion {
+        border-bottom: 1px solid red;
+        color: red;
+        &::placeholder {
+          color: red;
+        }
+        &:focus {
+          border-bottom: 1px solid red;
+          &::placeholder {
+            color: red;
           }
         }
       }

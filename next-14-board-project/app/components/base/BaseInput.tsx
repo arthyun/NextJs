@@ -8,6 +8,7 @@ const BaseInput: FC<BaseInputTypes> = ({
   name,
   type,
   placeholder,
+  className,
   value,
   onChange,
   required,
@@ -22,6 +23,7 @@ const BaseInput: FC<BaseInputTypes> = ({
         name={name}
         type={type}
         placeholder={placeholder}
+        className={className}
         value={value}
         onChange={onChange}
         required={required}

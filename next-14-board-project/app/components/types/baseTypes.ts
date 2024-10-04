@@ -5,6 +5,7 @@ export interface BaseInputTypes {
   name: string;
   type: string;
   placeholder?: string;
+  className?: string;
   value?: string | number;
   onChange?: Dispatch<SetStateAction<any>>;
   required: boolean;

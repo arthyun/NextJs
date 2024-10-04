@@ -24,7 +24,25 @@ const Login = () => {
     password: '',
     file: null as any,
   });
+  const [validationInputs, setValidationInputs] = useState({
+    emailArea: false,
+    passArea: false,
+  });
   const [isJoinForm, setIsJoinForm] = useState(false);
+
+  // 정규 표현식 함수
+  const wordsCheck = (id: string, value: string) => {
+    const originWord = value;
+    if (id === 'email') {
+      // test@test.kr/com 둘다 된다
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
+      return emailRegex.test(originWord);
+    } else if (id === 'password') {
+      // 대소문자 구분없는 영문 + 숫자 (8자 이상)
+      const passRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      return passRegex.test(originWord);
+    }
+  };
 
   const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -32,6 +50,33 @@ const Login = () => {
       ...loginForm,
       [id]: value,
     });
+    // onChange 마다 정규 표현 검사
+    const validation = wordsCheck(id, value);
+    if (!validation) {
+      if (id === 'email') {
+        setValidationInputs({
+          ...validationInputs,
+          emailArea: true,
+        });
+      } else if (id === 'password') {
+        setValidationInputs({
+          ...validationInputs,
+          passArea: true,
+        });
+      }
+    } else {
+      if (id === 'email') {
+        setValidationInputs({
+          ...validationInputs,
+          emailArea: false,
+        });
+      } else if (id === 'password') {
+        setValidationInputs({
+          ...validationInputs,
+          passArea: false,
+        });
+      }
+    }
   };
 
   const handleJoinChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +109,12 @@ const Login = () => {
     if (type === 'google') {
       return signIn('google');
     } else if (type === 'credentials') {
-      if (loginForm.email !== '' && loginForm.password !== '') {
+      if (
+        loginForm.email !== '' &&
+        loginForm.password !== '' &&
+        !validationInputs.emailArea &&
+        !validationInputs.passArea
+      ) {
         await signIn('credentials', {
           email: loginForm.email,
           password: loginForm.password,
@@ -96,12 +146,20 @@ const Login = () => {
         password: '',
         file: null,
       });
+      setValidationInputs({
+        emailArea: false,
+        passArea: false,
+      });
     } else {
       setJoinForm({
         nick_name: '',
         email: '',
         password: '',
         file: null,
+      });
+      setValidationInputs({
+        emailArea: false,
+        passArea: false,
       });
     }
   };
@@ -165,6 +223,10 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    document.querySelectorAll('input')[1].focus();
+  }, [isJoinForm]);
+
   return (
     <>
       {!isJoinForm && (
@@ -180,7 +242,14 @@ const Login = () => {
               id={'email'}
               name={'이메일'}
               type={'text'}
-              placeholder={'이메일 주소를 입력하세요'}
+              placeholder={
+                validationInputs.emailArea
+                  ? '이메일 주소가 잘못되었습니다'
+                  : '이메일 주소를 입력하세요'
+              }
+              className={
+                validationInputs.emailArea ? classes.fail_validaion : ''
+              }
               value={loginForm.email}
               onChange={handleLoginChange}
               required={false}
@@ -190,7 +259,14 @@ const Login = () => {
               id={'password'}
               name={'비밀번호'}
               type={'password'}
-              placeholder={'비밀번호를 입력하세요'}
+              placeholder={
+                validationInputs.passArea
+                  ? '비밀번호가 잘못되었습니다'
+                  : '비밀번호를 입력하세요'
+              }
+              className={
+                validationInputs.passArea ? classes.fail_validaion : ''
+              }
               value={loginForm.password}
               onChange={handleLoginChange}
               required={false}
@@ -204,7 +280,20 @@ const Login = () => {
               disabled={false}
             />
           </form>
-          <p className={classes.login_join} onClick={() => setIsJoinForm(true)}>
+          <p
+            className={classes.login_join}
+            onClick={() => {
+              setIsJoinForm(true);
+              setLoginForm({
+                email: '',
+                password: '',
+              });
+              setValidationInputs({
+                emailArea: false,
+                passArea: false,
+              });
+            }}
+          >
             회원가입이 필요하세요?
           </p>
         </motion.article>
@@ -268,7 +357,10 @@ const Login = () => {
           </form>
           <p
             className={classes.login_join}
-            onClick={() => setIsJoinForm(false)}
+            onClick={() => {
+              setIsJoinForm(false);
+              handleReset('part');
+            }}
           >
             돌아가기
           </p>
